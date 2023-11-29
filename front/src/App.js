@@ -1,9 +1,9 @@
-import KakaoMap from "./components/KakaoMap";
+import { Outlet } from "react-router-dom";
 
 function App() {
   return (
     <div>
-      <KakaoMap />
+      <Outlet />
     </div>
   );
 }
