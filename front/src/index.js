@@ -6,6 +6,8 @@ import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import MapPage from "./pages/MapPage";
+import WritingPage from "./pages/WritingPage";
+import VariationPage from "./pages/VariationPage";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +16,8 @@ const router = createBrowserRouter([
     children: [
       { index: true, path: "/", element: <LoginPage /> },
       { path: "/map", element: <MapPage /> },
+      { path: "/writing", element: <WritingPage /> },
+      { path: "/variation", element: <VariationPage /> },
     ],
   },
 ]);
