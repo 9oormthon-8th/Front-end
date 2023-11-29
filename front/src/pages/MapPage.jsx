@@ -7,7 +7,7 @@ const MapPage = () => {
 
   return (
     <div>
-      <KakaoMap location={location.state} />
+      <KakaoMap />
     </div>
   );
 };

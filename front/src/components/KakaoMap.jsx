@@ -1,7 +1,17 @@
-import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { useState, useEffect } from "react";
+import { Map, MapMarker } from "react-kakao-maps-sdk";
+import useKakaoLoader from "../hooks/useKakaoLoader";
+import { useGeoLocation } from "../hooks/useGeoLocation";
 
-const KakaoMap = ({ location }) => {
+const geolocationOptions = {
+  enableHighAccuracy: true,
+  timeout: 1000 * 10,
+  maximumAge: 1000 * 3600 * 24,
+};
+
+const KakaoMap = () => {
+  useKakaoLoader();
+
   const dummyLoactions = [
     { title: "카카오", latlng: { lat: 33.450705, lng: 126.570677 } },
     { title: "성산일출봉", latlng: { lat: 33.459219, lng: 126.940698 } },
@@ -9,15 +19,50 @@ const KakaoMap = ({ location }) => {
     { title: "신창풍차해안", latlng: { lat: 33.345346, lng: 126.17766 } },
   ];
 
-  const [level, setLevel] = useState(10);
+  const [level, setLevel] = useState(11);
+  const [curLocation, setCurLocation] = useState();
+
+  const { location, error } = useGeoLocation(geolocationOptions); // 현위치
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(
+        (position) => {
+          setCurLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+        },
+        (error) => {
+          console.log(error);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 3000,
+          maximumAge: 0,
+        }
+      );
+    }
+  }, []);
+
+  console.log("ㅇ", curLocation);
+
+  useEffect(() => {
+    setCurLocation(location);
+  }, [location]);
+
+  const [state, setState] = useState({
+    center: { lat: 33.450705, lng: 126.570677 },
+    isPanto: true,
+  });
 
   return (
     <div>
       <Map
-        center={{ lat: location.latitude, lng: location.longitude }}
+        center={state.center}
+        isPanto={state.isPanto}
         style={{ width: "400px", height: "600px" }}
         level={level}
-        onZoomChanged={(map) => setLevel(map.getLevel())}
       >
         {dummyLoactions.map((loc, idx) => (
           <MapMarker
@@ -30,10 +75,18 @@ const KakaoMap = ({ location }) => {
             title={loc.title}
           />
         ))}
-        <MapMarker
-          position={{ lat: location.latitude, lng: location.longitude }}
-        />
       </Map>
+      <button
+        onClick={() => (
+          setState({
+            center: { lat: curLocation.latitude, lng: curLocation.longitude },
+            isPanto: true,
+          }),
+          setLevel(9)
+        )}
+      >
+        현위치
+      </button>
     </div>
   );
 };
