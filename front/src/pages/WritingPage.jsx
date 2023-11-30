@@ -7,10 +7,13 @@ import ArrowBack from "../components/ArrowBack";
 import styled from "styled-components";
 import PlusIcon from "../assets/icons/plus.svg";
 import Search from "../assets/icons/search.svg";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function WritingPage() {
   const navigate = useNavigate();
   const { state } = useLocation();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   // 장소, 위치
   const [latitudeValue, setLatitudeValue] = useState(
@@ -104,6 +107,7 @@ export default function WritingPage() {
   }, [addressValue]);
 
   const postNewChallenge = async () => {
+    setIsLoading(true);
     try {
       const response = await axios.post(
         `https://www.sopt-demo.p-e.kr/dairy`,
@@ -119,9 +123,10 @@ export default function WritingPage() {
           "Content-Type": "application/json",
         }
       );
-      console.log(response.data);
+      setIsLoading(false);
       return response.data;
     } catch (error) {
+      setIsLoading(false);
       console.error("An error occurred while fetching data: ", error);
     }
   };
@@ -130,8 +135,13 @@ export default function WritingPage() {
 
   return (
     <div>
-      <ArrowBack title="글쓰기" />
+      {isLoading && (
+        <LoadingOverlay>
+          <CircularProgress color="inherit" />
+        </LoadingOverlay>
+      )}
 
+      <ArrowBack title="글쓰기" />
       <Wrapper>
         <StyledText>장소</StyledText>
 
@@ -247,4 +257,17 @@ const StyledButton = styled.button`
   width: 100%; // 너비 조정
   height: 30px;
   color: white;
+`;
+
+const LoadingOverlay = styled.div`
+  position: fixed; /* 화면에 고정 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+  background-color: rgba(0, 0, 0, 0.5); /* 어두운 배경 */
+  z-index: 1000; /* 다른 요소들 위에 표시 */
 `;
