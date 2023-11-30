@@ -120,9 +120,9 @@ export default function WritingPage() {
 
         <StyledText>주소</StyledText>
         <StyledInput type="text" value={addressValue} />
-        <Icon>
+        <InputWithIcon>
           <img src={Search} alt="" />
-        </Icon>
+        </InputWithIcon>
 
         {isModalOpen && (
           <DaumPostcodeEmbed
@@ -142,9 +142,9 @@ export default function WritingPage() {
         <StyledText>키워드</StyledText>
 
         <StyledInput type="text" onChange={handleDate} placeholder="즐거움" />
-        <Icon onClick={() => postNewChallenge()}>
+        <InputWithIcon onClick={() => postNewChallenge()}>
           <img src={PlusIcon} alt="" />
-        </Icon>
+        </InputWithIcon>
       </Wrapper>
     </div>
   );
@@ -158,8 +158,11 @@ const Wrapper = styled.div`
   margin: 10px;
 `;
 
-const Icon = styled.div`
-  margin-left: 5px;
+const InputWithIcon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
 `;
 
 const Container = styled.div`
