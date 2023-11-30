@@ -5,6 +5,10 @@ import useKakaoLoader from "../hooks/useKakaoLoader";
 import { useGeoLocation } from "../hooks/useGeoLocation";
 import ArrowBack from "../components/ArrowBack";
 import axios from "axios";
+import { styled, css } from "styled-components";
+import search from "../assets/search.svg";
+import profile from "../assets/img1.svg";
+import LongCard from "./LongCard";
 
 const geolocationOptions = {
   enableHighAccuracy: true,
@@ -129,14 +133,17 @@ const KakaoMap = () => {
     }
   }, []);
 
+  const [onBar, setOnBar] = useState(false);
+  const clickBar = () => setOnBar((prev) => !prev);
+
   return (
-    <div>
-      <ArrowBack title="" />
+    <Wrapper>
+      {/* <ArrowBack title="" /> */}
       <Map
         id="map"
         center={state.center}
         isPanto={state.isPanto}
-        style={{ width: "400px", height: "600px" }}
+        style={{ width: "100%", height: "835px" }}
         level={level}
         onDragEnd={(map) =>
           setState({
@@ -173,58 +180,184 @@ const KakaoMap = () => {
             position={{ lat: curLocation.latitude, lng: curLocation.longitude }}
           />
         )}
-        <div>
-          {curLocation.latitude} / {curLocation.longitude}
-        </div>
-        <div>{address}</div>
       </Map>
 
-      {/* 마커 누를 때 나오는 바텀 */}
-      {setMarkerOpen && selectedMarker && (
-        <div>
-          <p>{selectedMarker.location}</p>
-          <p>{selectedMarker.dairyContent}</p>
-          <p>{selectedMarker.sdate}</p>
-          <p>{selectedMarker.keyword}</p>
-        </div>
-      )}
-
-      <div
-        onClick={() => (
-          setState({
-            center: { lat: curLocation.latitude, lng: curLocation.longitude },
-            isPanto: true,
-          }),
-          setLevel(9)
-        )}
-      >
-        <img
-          src="image/KakaoMap/MyLocation.png"
-          alt="현위치"
-          style={{ width: 25, heigh: 25 }}
-        />
-      </div>
-
-      <div
-        onClick={() =>
-          navigate("/writing", { state: { address, curLocation } })
-        }
-      >
-        <img
-          src="image/KakaoMap/WriteButton.png"
-          alt="글쓰기"
-          style={{ width: 75, heigh: 28 }}
-        />
-      </div>
-
-      <div>
-        curlocation : {curLocation.latitude} {curLocation.longitude}
-      </div>
-      <div>
-        state : {state.center.lat} {state.center.lng}
-      </div>
-    </div>
+      <Content $isActive={onBar}>
+        <Top>
+          <img
+            src={search}
+            onClick={() => (
+              setState({
+                center: {
+                  lat: curLocation.latitude,
+                  lng: curLocation.longitude,
+                },
+                isPanto: true,
+              }),
+              setLevel(9)
+            )}
+          />
+          {!onBar && <Btn onClick={() => navigate("/writing")}>+ 글쓰기</Btn>}
+        </Top>
+        <Bar onClick={clickBar} $isActive={onBar}>
+          <Line></Line>
+          {onBar && (
+            <>
+              <Info>
+                <Box1>
+                  <img src={profile} />
+                  <Box2>
+                    <div>구름톤</div>
+                    <div>2000.00.00~00,00</div>
+                  </Box2>
+                </Box1>
+                <button onClick={() => navigate("/writing")}>+ 글쓰기</button>
+              </Info>
+              <Card>
+                <LongCard />
+                <LongCard />
+                <LongCard />
+              </Card>
+            </>
+          )}
+        </Bar>
+      </Content>
+    </Wrapper>
   );
 };
 
+const Wrapper = styled.div`
+  position: relative;
+`;
+const Content = styled.div`
+  position: absolute;
+
+  width: 100%;
+  height: 120px;
+
+  bottom: 0px;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  transition: height 0.3s ease;
+
+  ${({ $isActive }) =>
+    $isActive &&
+    css`
+      height: 520px;
+    `}
+`;
+const Top = styled.div`
+  width: 85%;
+
+  margin: 0 auto;
+
+  display: flex;
+  justify-content: space-between;
+`;
+const Btn = styled.button`
+  width: 110px;
+  height: 44px;
+  border-radius: 30px;
+  background: #00d67c;
+
+  color: #fff;
+
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  border: none;
+`;
+const Bar = styled.div`
+  border-radius: 16px 16px 0px 0px;
+
+  height: 62px;
+
+  background: #ffffff;
+
+  transition: height 0.3s ease;
+
+  ${({ $isActive }) =>
+    $isActive &&
+    css`
+      height: 460px;
+    `}
+`;
+const Line = styled.div`
+  background: #d9d9d9;
+  width: 46px;
+  height: 2px;
+
+  margin: 0 auto;
+
+  margin-top: 15px;
+  margin-bottom: 32px;
+`;
+const Info = styled.div`
+  width: 90%;
+
+  margin: 0 auto;
+
+  display: flex;
+  justify-content: space-between;
+
+  button {
+    width: 110px;
+    height: 44px;
+
+    border-radius: 30px;
+    background: #00d67c;
+
+    border: none;
+
+    color: #fff;
+    font-family: Pretendard;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+`;
+const Box1 = styled.div`
+  display: flex;
+
+  gap: 7px;
+`;
+
+const Box2 = styled.div`
+  div:nth-child(1) {
+    color: #000;
+    font-family: Pretendard;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+
+  div:nth-child(2) {
+    color: #b5b5b5;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+`;
+
+const Card = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  height: 70%;
+  overflow-y: scroll;
+
+  margin-top: 15px;
+`;
 export default KakaoMap;
