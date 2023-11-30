@@ -9,6 +9,7 @@ const MainPage = () => {
       <div>MAP</div>
       <div>FOLDER</div>
       <button onClick={() => navigate("/map")}>MapPage</button>
+      <button onClick={() => navigate("/main/detail")}>MainDetialPage</button>
     </div>
   );
 };
