@@ -5,8 +5,10 @@ import axios from "axios";
 import ArrowBack from "../components/ArrowBack";
 import ArrowRotate from "../assets/icons/arrow-rotate.svg";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const VariationPage = () => {
+  const navigate = useNavigate();
   const { state } = useLocation();
 
   const [dairyDetail, setDairyDetail] = useState({
@@ -20,16 +22,17 @@ const VariationPage = () => {
   const patchDairyDetail = async () => {
     try {
       const response = await axios.patch(
-        `https://www.sopt-demo.p-e.kr/dairy/4`,
+        `https://www.sopt-demo.p-e.kr/dairy/${state.id}`,
         {
           // body
-          dairyContent: "화이팅화이팅화이팅",
+          dairyContent: dairyDetail.dairyContent,
         },
         {
           // header
           "Content-Type": "application/json",
         }
       );
+      navigate("/variation/detail", { state: state.id });
     } catch (error) {
       console.error("An error occurred while fetching data: ", error);
     }

@@ -106,10 +106,7 @@ const Address = styled.div`
 `;
 
 const Desc = styled.div`
-  overflow: hidden;
   color: #6b6b6b;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   font-family: Pretendard;
   font-size: 18px;
   font-style: normal;
