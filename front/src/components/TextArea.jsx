@@ -1,12 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
+import { styled } from "styled-components";
 
-const TextArea = ({ label, value, onChange }) => {
+const TextArea = ({ value, onChange }) => {
   return (
-    <div>
-      <label>{label}</label>
+    <Wrapper>
       <textarea value={value} onChange={onChange} />
-    </div>
+    </Wrapper>
   );
 };
 
+const Wrapper = styled.div`
+  width: 400px;
+
+  height: 194px;
+  margin-top: 15px;
+
+  textarea {
+    width: 390px;
+    height: 194px;
+  }
+`;
 export default TextArea;
