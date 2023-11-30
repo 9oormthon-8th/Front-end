@@ -197,7 +197,15 @@ const KakaoMap = () => {
               setLevel(9)
             )}
           />
-          {!onBar && <Btn onClick={() => navigate("/writing")}>+ 글쓰기</Btn>}
+          {!onBar && (
+            <Btn
+              onClick={() =>
+                navigate("/writing", { state: { address, curLocation } })
+              }
+            >
+              + 글쓰기
+            </Btn>
+          )}
         </Top>
         <Bar onClick={clickBar} $isActive={onBar}>
           <Line></Line>
@@ -211,7 +219,13 @@ const KakaoMap = () => {
                     <div>2000.00.00~00,00</div>
                   </Box2>
                 </Box1>
-                <button onClick={() => navigate("/writing")}>+ 글쓰기</button>
+                <button
+                  onClick={() =>
+                    navigate("/writing", { state: { address, curLocation } })
+                  }
+                >
+                  + 글쓰기
+                </button>
               </Info>
               <Card>
                 <LongCard />

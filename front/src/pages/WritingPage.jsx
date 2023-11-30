@@ -119,18 +119,20 @@ export default function WritingPage() {
         />
 
         <StyledText>주소</StyledText>
-        <StyledInput type="text" value={addressValue} />
+
         <InputWithIcon>
-          <img src={Search} alt="" />
+          <StyledInput type="text" value={addressValue} />
+          <Img src={Search} alt="" />
         </InputWithIcon>
 
+        {/* 
         {isModalOpen && (
           <DaumPostcodeEmbed
             onComplete={handleComplete}
             animation={true}
             autoClose={false}
           />
-        )}
+        )} */}
 
         <StyledText>날짜</StyledText>
         <StyledInput
@@ -141,10 +143,14 @@ export default function WritingPage() {
 
         <StyledText>키워드</StyledText>
 
-        <StyledInput type="text" onChange={handleDate} placeholder="즐거움" />
-        <InputWithIcon onClick={() => postNewChallenge()}>
-          <img src={PlusIcon} alt="" />
+        <InputWithIcon>
+          <StyledInput type="text" onChange={handleDate} placeholder="즐거움" />
+          <Img src={PlusIcon} alt="" onClick={() => postNewChallenge()} />
         </InputWithIcon>
+
+        <StyledButton>
+          <StyledTypo>변환하기</StyledTypo>
+        </StyledButton>
       </Wrapper>
     </div>
   );
@@ -159,17 +165,16 @@ const Wrapper = styled.div`
 `;
 
 const InputWithIcon = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 80%;
+  justify-content: space-between;
+  width: 100%;
 `;
-
-const Container = styled.div`
-  display: flex;
-  align-items: center;
+const Img = styled.img`
+  position: absolute;
+  right: 5px;
 `;
-
 const StyledText = styled.div`
   color: #000;
   font-family: Pretendard;
@@ -178,15 +183,37 @@ const StyledText = styled.div`
   font-weight: 700;
   line-height: normal;
   display: flex;
-  width: 80%; // 필요한 경우 너비 조정
+  width: 100%; // 필요한 경우 너비 조정
   text-align: center; // 텍스트 중앙 정렬
+`;
+
+const StyledTypo = styled.div`
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
 `;
 
 const StyledInput = styled.input`
   border-radius: 4px;
   border: 1px solid #b5b5b5;
-  width: 80%;
+  width: 100%; // 너비 조정
   height: 30px;
-  display: flex;
-  justify-content: center; // 가로축에서 중앙 정렬
+  ::placeholder {
+    color: #999; // 플레이스홀더 텍스트 색상 변경
+    font-family: Pretendard;
+    font-weight: 700;
+    font-size: 16px; // 글꼴 크기 변경
+  }
+`;
+
+const StyledButton = styled.button`
+  border-radius: 4px;
+  background: #00d67c;
+  border: none;
+  width: 100%; // 너비 조정
+  height: 30px;
+  color: white;
 `;

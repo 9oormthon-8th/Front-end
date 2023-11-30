@@ -17,11 +17,15 @@ const ArrowBack = ({ title }) => {
 };
 
 const BackButton = styled.div`
+  padding-top: 5px;
   cursor: pointer;
 `;
+
 const Container = styled.div`
   display: flex;
   align-items: center;
+  width: 100%;
+  border-bottom: 2px solid #f2f2f2;
 `;
 
 const StyledText = styled.text`
