@@ -37,7 +37,6 @@ const KakaoMap = () => {
   ];
 
   const navigate = useNavigate();
-
   useKakaoLoader();
 
   // 확대 수준
@@ -61,32 +60,21 @@ const KakaoMap = () => {
   // 현주소
   const [address, setAddress] = useState();
 
-  const mapApi = async () => {
-    console.log(curLocation);
-    try {
-      let response = await axios
-        .get(
-          `https://dapi.kakao.com/v2/local/geo/coord2address.json?input_coord=WGS84&x=${curLocation.latitude}&y=${curLocation.longitude}`,
-          {
-            headers: {
-              Authorization: "KakaoAK 8ef1e6396cc8eb4082782ebb2f2b130c",
-            },
-          }
-        )
-        .then((response) => {
-          const location = response.data.documents[0];
-          console.log("then", response);
-          setAddress(location);
-          console.log({
-            si: location.address.region_1depth_name,
-            gu: location.address.region_2depth_name,
-            dong: location.address.region_3depth_name,
-          });
-        });
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+  // 도로명 주소 불러오기
+  useEffect(() => {
+    const geocoder = new window.kakao.maps.services.Geocoder();
+    const coord = new window.kakao.maps.LatLng(
+      curLocation.latitude,
+      curLocation.longitude
+    );
+    const callback = function (result, status) {
+      console.log(result);
+      if (status === window.kakao.maps.services.Status.OK) {
+        setAddress(result[0].address.address_name);
+      }
+    };
+    geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+  }, [curLocation]);
 
   // 현위치
   useEffect(() => {
@@ -98,7 +86,6 @@ const KakaoMap = () => {
               latitude: position.coords.latitude,
               longitude: position.coords.longitude,
             });
-            mapApi();
           },
           (error) => {
             console.log(error);
@@ -117,6 +104,9 @@ const KakaoMap = () => {
     }, 3000);
   }, []);
 
+  useEffect(() => {}, [curLocation]);
+
+  // 최초 위치 갱신
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition(
@@ -127,6 +117,10 @@ const KakaoMap = () => {
               lng: position.coords.longitude,
             },
           });
+          setCurLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
         },
         (error) => {
           console.log(error);
@@ -135,15 +129,11 @@ const KakaoMap = () => {
     }
   }, []);
 
-  // 내 위도 경도
-  console.log(curLocation);
-  // 내 주소
-  console.log(address);
-
   return (
     <div>
       <ArrowBack title="" />
       <Map
+        id="map"
         center={state.center}
         isPanto={state.isPanto}
         style={{ width: "400px", height: "600px" }}
@@ -175,6 +165,10 @@ const KakaoMap = () => {
             position={{ lat: curLocation.latitude, lng: curLocation.longitude }}
           />
         )}
+        <div>
+          {curLocation.latitude} / {curLocation.longitude}
+        </div>
+        <div>{address}</div>
       </Map>
 
       {/* 마커 누를 때 나오는 바텀 */}
