@@ -10,7 +10,7 @@ const geolocationOptions = {
   maximumAge: 1000 * 3600 * 24,
 };
 
-const KakaoSimpleMap = () => {
+const KakaoMiniMap = () => {
   const dummyLoactions = [
     {
       title: "카카오",
@@ -38,20 +38,61 @@ const KakaoSimpleMap = () => {
 
   useKakaoLoader();
 
-  const [level, setLevel] = useState(11);
+  const [level, setLevel] = useState(8);
   const [curLocation, setCurLocation] = useState({ latitude: 0, longitude: 0 });
 
   // 맵 화면 위치
   const [state, setState] = useState({
-    center: { lat: 33.37666, lng: 126.54245 },
+    center: { lat: 33.450705, lng: 126.570677 },
     isPanto: true,
   });
+
+  // 현위치
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(
+        (position) => {
+          setCurLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+        },
+        (error) => {
+          console.log(error);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 3000,
+          maximumAge: 0,
+        }
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(
+        (position) => {
+          setState({
+            center: {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            },
+          });
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+  }, []);
 
   return (
     <div>
       <Map
         center={state.center}
-        style={{ width: "400px", height: "400px" }}
+        isPanto={state.isPanto}
+        style={{ width: "400px", height: "200px" }}
         level={level}
         draggable={false}
         zoomable={false}
@@ -78,4 +119,4 @@ const KakaoSimpleMap = () => {
   );
 };
 
-export default KakaoSimpleMap;
+export default KakaoMiniMap;

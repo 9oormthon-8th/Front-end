@@ -3,11 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import useKakaoLoader from "../hooks/useKakaoLoader";
 import { useGeoLocation } from "../hooks/useGeoLocation";
+import ArrowBack from "../components/ArrowBack";
+import axios from "axios";
 
 const geolocationOptions = {
   enableHighAccuracy: true,
-  timeout: 1000 * 10,
-  maximumAge: 1000 * 3600 * 24,
+  timeout: 1000,
+  maximumAge: 0,
 };
 
 const KakaoMap = () => {
@@ -38,44 +40,81 @@ const KakaoMap = () => {
 
   useKakaoLoader();
 
-  // 마커 상세정보 모달, 선택된 마커 표시
+  // 확대 수준
+  const [level, setLevel] = useState(10);
+  // 현재 위치
+  const [curLocation, setCurLocation] = useState({ latitude: 0, longitude: 0 });
+  // 맵 화면 위치
+  const [state, setState] = useState({
+    center: { lat: 33.450705, lng: 126.570677 },
+    isPanto: true,
+  });
+  // 마커 상세정보 모달
   const [MarkerOpen, setMarkerOpen] = useState(false);
+  // 선택된 마커 표시
   const [selectedMarker, setSelectedMarker] = useState(null);
   // 마커 클릭
   const handleMarkerClick = (marker) => {
     setSelectedMarker(marker);
     setMarkerOpen(true);
   };
+  // 현주소
+  const [address, setAddress] = useState();
 
-  const [level, setLevel] = useState(10);
-  const [curLocation, setCurLocation] = useState({ latitude: 0, longitude: 0 });
-
-  // 맵 화면 위치
-  const [state, setState] = useState({
-    center: { lat: 33.450705, lng: 126.570677 },
-    isPanto: true,
-  });
+  const mapApi = async () => {
+    console.log(curLocation);
+    try {
+      let response = await axios
+        .get(
+          `https://dapi.kakao.com/v2/local/geo/coord2address.json?input_coord=WGS84&x=${curLocation.latitude}&y=${curLocation.longitude}`,
+          {
+            headers: {
+              Authorization: "KakaoAK 8ef1e6396cc8eb4082782ebb2f2b130c",
+            },
+          }
+        )
+        .then((response) => {
+          const location = response.data.documents[0];
+          console.log("then", response);
+          setAddress(location);
+          console.log({
+            si: location.address.region_1depth_name,
+            gu: location.address.region_2depth_name,
+            dong: location.address.region_3depth_name,
+          });
+        });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   // 현위치
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(
-        (position) => {
-          setCurLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
-        },
-        (error) => {
-          console.log(error);
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 3000,
-          maximumAge: 0,
-        }
-      );
-    }
+    let polling = setInterval(() => {
+      if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(
+          (position) => {
+            setCurLocation({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            });
+            mapApi();
+          },
+          (error) => {
+            console.log(error);
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 3000,
+            maximumAge: 0,
+          }
+        );
+      }
+
+      return () => {
+        clearInterval(polling);
+      };
+    }, 3000);
   }, []);
 
   useEffect(() => {
@@ -96,16 +135,21 @@ const KakaoMap = () => {
     }
   }, []);
 
+  // 내 위도 경도
   console.log(curLocation);
-  console.log(state);
+  // 내 주소
+  console.log(address);
+
   return (
     <div>
+      <ArrowBack title="" />
       <Map
         center={state.center}
         isPanto={state.isPanto}
         style={{ width: "400px", height: "600px" }}
         level={level}
       >
+        {/* 내가 기록한 곳 */}
         {dummyLoactions.map((loc, idx) => (
           <MapMarker
             key={`${loc.title}-${loc.latlng}`}
@@ -125,12 +169,15 @@ const KakaoMap = () => {
           />
         ))}
 
+        {/* 내 위치 */}
         {curLocation && (
           <MapMarker
             position={{ lat: curLocation.latitude, lng: curLocation.longitude }}
           />
         )}
       </Map>
+
+      {/* 마커 누를 때 나오는 바텀 */}
       {setMarkerOpen && selectedMarker && (
         <div>
           <p>{selectedMarker.title}</p>
@@ -173,5 +220,3 @@ const KakaoMap = () => {
 };
 
 export default KakaoMap;
-
-// 위경도, 도로명주소
