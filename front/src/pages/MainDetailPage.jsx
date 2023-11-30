@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import LongCard from "../components/LongCard";
-import arrow_back from "../assets/icons/arrow_back.svg";
+import cardImage2 from "../assets/cardImage2.svg";
+import ArrowBack from "../components/ArrowBack";
 import KakaoSimpleMap from "../components/KakaoSimpleMap";
 
 export default function MainDetailPage() {
@@ -45,17 +46,15 @@ export default function MainDetailPage() {
 
   return (
     <Wrapper>
-      <Header>
-        <img src={arrow_back} onClick={() => window.history.go(-1)} />
-      </Header>
+      <ArrowBack />
       <KakaoSimpleMap onClick={() => navigate("/map")} />
       <ContentLayer>
         <Head1>
           <Info>
-            <Box></Box>
+            <Box src={cardImage2}></Box>
             <Info1>
               <div>구름톤</div>
-              <div>2000.00.00 ~ 00,00</div>
+              <div>2023.11.20 ~ 11.30</div>
             </Info1>
           </Info>
           <button
@@ -130,11 +129,9 @@ const Info = styled.div`
   gap: 10px;
 `;
 
-const Box = styled.div`
+const Box = styled.img`
   width: 44px;
   height: 44px;
-
-  background: #d9d9d9;
 `;
 const Info1 = styled.div`
   display: flex;
@@ -178,4 +175,10 @@ const Content2 = styled.div`
   height: 80%;
   min-height: 80%;
   overflow-y: scroll;
+`;
+
+const Img = styled.img`
+  width: 142px;
+  height: 98px;
+  margin-top: 20px;
 `;

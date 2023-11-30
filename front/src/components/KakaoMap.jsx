@@ -58,8 +58,12 @@ const KakaoMap = () => {
   const [selectedMarker, setSelectedMarker] = useState(null);
   // 마커 클릭
   const handleMarkerClick = (marker) => {
+    console.log(marker);
     setSelectedMarker(marker);
+    setState({ center: { lat: marker.latitude, lng: marker.longitude } });
+    setLevel(8);
     setMarkerOpen(true);
+    setOnBar(true);
   };
   // 현주소
   const [address, setAddress] = useState();

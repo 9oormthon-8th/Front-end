@@ -1,7 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
-import picture from "../assets/picture.svg";
+import picture from "../assets/banner.png";
+import cardImage1 from "../assets/cardImage1.svg";
+import cardImage2 from "../assets/cardImage2.svg";
+import cardImage3 from "../assets/cardImage3.svg";
+import cardImage4 from "../assets/cardImage4.svg";
 import SquareCard from "../components/SquareCard";
 
 const MainPage = () => {
@@ -17,14 +21,29 @@ const MainPage = () => {
       <ContentLayer>
         <Secetion1>
           <Folder>4개의 폴더</Folder>
-          <FolderBtn onClick={() => navigate("/detail")}>+ 폴더</FolderBtn>
+          <FolderBtn>+ 폴더</FolderBtn>
         </Secetion1>
-        <Secetion2>
-          <SquareCard />
-          <SquareCard />
-          <SquareCard />
-          <SquareCard />
-          <SquareCard />
+        <Secetion2 onClick={() => navigate("/detail")}>
+          <SquareCard
+            props={cardImage2}
+            title="구름톤"
+            date="2023.11.20 ~ 11.30"
+          />
+          <SquareCard
+            props={cardImage1}
+            title="서귀포 여행"
+            date="2023.10.20 ~ 10.24"
+          />
+          <SquareCard
+            props={cardImage3}
+            title="먹방 여행"
+            date="2023.07.04 ~ 07.11"
+          />
+          <SquareCard
+            props={cardImage4}
+            title="오름 투어"
+            date="2023.01.01 ~ 01.04"
+          />
         </Secetion2>
       </ContentLayer>
     </Wrapper>
@@ -43,8 +62,8 @@ const Picture = styled.img`
 `;
 const Title = styled.div`
   position: absolute;
-  top: 46px;
-  left: 26px;
+  top: 116px;
+  left: 18px;
 
   color: #fff;
   font-family: Pretendard;

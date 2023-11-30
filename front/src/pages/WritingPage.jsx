@@ -7,14 +7,13 @@ import ArrowBack from "../components/ArrowBack";
 import styled from "styled-components";
 import PlusIcon from "../assets/icons/plus.svg";
 import Search from "../assets/icons/search.svg";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function WritingPage() {
   const navigate = useNavigate();
   const { state } = useLocation();
 
-  console.log(state.address);
-  console.log(state.curLocation.latitude);
-  console.log(state.curLocation.longitude);
+  const [isLoading, setIsLoading] = useState(false);
 
   // 장소, 위치
   const [latitudeValue, setLatitudeValue] = useState(
@@ -25,8 +24,11 @@ export default function WritingPage() {
   );
   const [addressValue, setAddressValue] = useState(state.address);
   const [title, setTitle] = useState("");
-  const [keyword, setKeyword] = useState("");
   const [date, setDate] = useState("");
+  const [keywordArray, setKeywordArray] = useState([]);
+  const [keywordInput, setKeywordInput] = useState("");
+
+  const [keyword, setKeyword] = useState("");
 
   const handleTitle = (e) => {
     setTitle(e.target.value);
@@ -34,6 +36,26 @@ export default function WritingPage() {
 
   const handleDate = (e) => {
     setDate(e.target.value);
+  };
+
+  const handleKeyword = (e) => {
+    setKeywordInput(e.target.value);
+    console.log(e.target.value);
+  };
+
+  const addKeyword = () => {
+    if (keywordInput !== "") {
+      keywordArray.push(keywordInput);
+    }
+    setKeywordInput("");
+  };
+
+  const deleteKeyword = (i) => {
+    console.log("deleteKeyword");
+    let tmp = keywordArray.filter((element, idx) => {
+      return idx !== i;
+    });
+    setKeywordArray(tmp);
   };
 
   // 주소 검색 모달
@@ -85,6 +107,7 @@ export default function WritingPage() {
   }, [addressValue]);
 
   const postNewChallenge = async () => {
+    setIsLoading(true);
     try {
       const response = await axios.post(
         `https://www.sopt-demo.p-e.kr/dairy`,
@@ -92,23 +115,34 @@ export default function WritingPage() {
           latitude: latitudeValue,
           longitude: longitudeValue,
           location: title,
-          keyword: "추위, 바람, 즐거움",
+          keyword: keywordArray.toString(),
+          date: date,
+          roadAddress: addressValue,
         },
         {
           "Content-Type": "application/json",
         }
       );
-      console.log(response.data);
+      setIsLoading(false);
+      console.log(response.data.data);
       return response.data;
     } catch (error) {
+      setIsLoading(false);
       console.error("An error occurred while fetching data: ", error);
     }
   };
 
+  console.log(date);
+
   return (
     <div>
-      <ArrowBack title="글쓰기" />
+      {isLoading && (
+        <LoadingOverlay>
+          <CircularProgress color="inherit" />
+        </LoadingOverlay>
+      )}
 
+      <ArrowBack title="글쓰기" />
       <Wrapper>
         <StyledText>장소</StyledText>
 
@@ -142,14 +176,22 @@ export default function WritingPage() {
         />
 
         <StyledText>키워드</StyledText>
-
         <InputWithIcon>
-          <StyledInput type="text" onChange={handleDate} placeholder="즐거움" />
-          <Img src={PlusIcon} alt="" onClick={() => postNewChallenge()} />
+          <StyledInput
+            type="text"
+            onChange={handleKeyword}
+            placeholder="즐거움"
+            value={keywordInput}
+          />
+          <Img src={PlusIcon} alt="" onClick={() => addKeyword()} />
         </InputWithIcon>
 
+        {keywordArray.map((keyword, idx) => (
+          <button onClick={() => deleteKeyword(idx)}>{keyword}</button>
+        ))}
+
         <StyledButton>
-          <StyledTypo>변환하기</StyledTypo>
+          <StyledTypo onClick={() => postNewChallenge()}>변환하기</StyledTypo>
         </StyledButton>
       </Wrapper>
     </div>
@@ -216,4 +258,17 @@ const StyledButton = styled.button`
   width: 100%; // 너비 조정
   height: 30px;
   color: white;
+`;
+
+const LoadingOverlay = styled.div`
+  position: fixed; /* 화면에 고정 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+  background-color: rgba(0, 0, 0, 0.5); /* 어두운 배경 */
+  z-index: 1000; /* 다른 요소들 위에 표시 */
 `;
