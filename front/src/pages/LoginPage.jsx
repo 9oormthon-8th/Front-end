@@ -9,7 +9,7 @@ export default function LoginPage() {
   return (
     <div>
       <div>로고</div>
-      <button onClick={() => navigate("/map")}>로그인</button>
+      <button onClick={() => navigate("/main")}>로그인</button>
     </div>
   );
 }

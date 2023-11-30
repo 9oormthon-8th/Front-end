@@ -1,6 +1,6 @@
 import React from "react";
-import KakaoMap from "../components/KakaoMap";
 import { useLocation } from "react-router-dom";
+import KakaoMap from "../components/KakaoMap";
 
 const MapPage = () => {
   const location = useLocation();

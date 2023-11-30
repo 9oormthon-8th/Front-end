@@ -11,19 +11,6 @@ const geolocationOptions = {
 };
 
 const KakaoMap = () => {
-  const navigate = useNavigate();
-
-  useKakaoLoader();
-
-  // 마커 상세정보 모달, 선택된 마커 표시
-  const [isMarkerOpen, setIsMarkerOpen] = useState(false);
-  const [selectedMarker, setSelectedMarker] = useState(null);
-  // 마커 클릭
-  const handleMarkerClick = (marker) => {
-    setSelectedMarker(marker);
-    setIsMarkerOpen(true);
-  };
-
   const dummyLoactions = [
     {
       title: "카카오",
@@ -46,6 +33,19 @@ const KakaoMap = () => {
       message: "신창풍차차차차차차차.",
     },
   ];
+
+  const navigate = useNavigate();
+
+  useKakaoLoader();
+
+  // 마커 상세정보 모달, 선택된 마커 표시
+  const [MarkerOpen, setMarkerOpen] = useState(false);
+  const [selectedMarker, setSelectedMarker] = useState(null);
+  // 마커 클릭
+  const handleMarkerClick = (marker) => {
+    setSelectedMarker(marker);
+    setMarkerOpen(true);
+  };
 
   const [level, setLevel] = useState(11);
   const [curLocation, setCurLocation] = useState({ latitude: 0, longitude: 0 });
@@ -112,7 +112,7 @@ const KakaoMap = () => {
           />
         )}
       </Map>
-      {setIsMarkerOpen && selectedMarker && (
+      {setMarkerOpen && selectedMarker && (
         <div>
           <p>{selectedMarker.title}</p>
           <p>{selectedMarker.message}</p>
