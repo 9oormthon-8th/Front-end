@@ -220,7 +220,7 @@ const KakaoMap = () => {
                   <img src={profile} />
                   <Box2>
                     <div>구름톤</div>
-                    <div>2000.00.00~00,00</div>
+                    <div>2023.11.20 ~ 11.30</div>
                   </Box2>
                 </Box1>
                 <button

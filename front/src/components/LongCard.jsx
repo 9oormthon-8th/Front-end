@@ -1,18 +1,23 @@
 import React from "react";
 import { styled } from "styled-components";
+import { useNavigate } from "react-router-dom";
 
-export default function LongCard() {
+export default function LongCard({ item }) {
+  const navigate = useNavigate();
+  console.log(item);
+
   return (
-    <Card>
+    <Card onClick={() => navigate("/variation/detail", { state: item.id })}>
       <Title>
         <div>성산</div>
-        <div>11:30</div>
+        <div>{item.date}</div>
       </Title>
-      <Title1>성산 일출봉</Title1>
-      <Desc>성산일출봉은 추워도, 바람이 세도 아름다운 풍경을 볼 수 있는</Desc>
+      <Title1>{item.date}</Title1>
+      <Desc>{item.dairyContent}</Desc>
       <Tags>
-        <Tag>추위</Tag>
-        <Tag>바람</Tag>
+        {item.keyword.split(",").map((i, idx) => (
+          <Tag>{i}</Tag>
+        ))}
       </Tags>
     </Card>
   );
@@ -119,7 +124,11 @@ const Tag = styled.div`
   font-weight: 500;
   line-height: normal;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-top: 3px;
 `;

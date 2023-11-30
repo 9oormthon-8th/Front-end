@@ -4,14 +4,17 @@ import TextArea from "../components/TextArea";
 import axios from "axios";
 import ArrowBack from "../components/ArrowBack";
 import ArrowRotate from "../assets/icons/arrow-rotate.svg";
+import { useLocation } from "react-router-dom";
 
 const VariationPage = () => {
+  const { state } = useLocation();
+
   const [dairyDetail, setDairyDetail] = useState({
-    location: "",
-    roadAddress: "",
-    date: "",
-    keyword: "",
-    dairyContent: "",
+    location: state.location,
+    roadAddress: state.roadAddress,
+    date: state.date,
+    keyword: state.keyword,
+    dairyContent: state.dairyContent,
   });
 
   const patchDairyDetail = async () => {
@@ -32,34 +35,34 @@ const VariationPage = () => {
     }
   };
 
-  const getDairyDetail = async () => {
-    try {
-      const response = await axios.get(
-        `https://www.sopt-demo.p-e.kr/dairy/detail/4`,
-        {
-          // body
-        },
-        {
-          // header
-          "Content-Type": "application/json",
-        }
-      );
-      console.log("getDairyDetail", response.data.data);
-      setDairyDetail({
-        location: response.data.data.location,
-        roadAddress: response.data.data.roadAddress,
-        date: response.data.data.date,
-        keyword: response.data.data.keyword,
-        dairyContent: response.data.data.dairyContent,
-      });
-    } catch (error) {
-      console.error("An error occurred while fetching data: ", error);
-    }
-  };
+  // const getDairyDetail = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `https://www.sopt-demo.p-e.kr/dairy/detail/4`,
+  //       {
+  //         // body
+  //       },
+  //       {
+  //         // header
+  //         "Content-Type": "application/json",
+  //       }
+  //     );
+  //     console.log("getDairyDetail", response.data.data);
+  //     setDairyDetail({
+  //       location: response.data.data.location,
+  //       roadAddress: response.data.data.roadAddress,
+  //       date: response.data.data.date,
+  //       keyword: response.data.data.keyword,
+  //       dairyContent: response.data.data.dairyContent,
+  //     });
+  //   } catch (error) {
+  //     console.error("An error occurred while fetching data: ", error);
+  //   }
+  // };
 
-  useEffect(() => {
-    getDairyDetail();
-  }, []);
+  // useEffect(() => {
+  //   getDairyDetail();
+  // }, []);
 
   const changeContent = (event) => {
     // dairyDetail 복사

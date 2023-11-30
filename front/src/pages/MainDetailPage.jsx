@@ -5,9 +5,33 @@ import LongCard from "../components/LongCard";
 import cardImage2 from "../assets/cardImage2.svg";
 import ArrowBack from "../components/ArrowBack";
 import KakaoSimpleMap from "../components/KakaoSimpleMap";
+import axios from "axios";
+import Arrow from "../assets/icons/arrow_back2.svg";
 
 export default function MainDetailPage() {
   const navigate = useNavigate();
+  const [dairyList, setDairyList] = useState([]);
+
+  // 다이어리 목록 불러오기
+  const getDairyAll = async () => {
+    try {
+      const response = await axios.get(
+        `https://www.sopt-demo.p-e.kr/dairy/all`,
+        {},
+        {
+          "Content-Type": "application/json",
+        }
+      );
+      console.log(response.data.data);
+      setDairyList(response.data.data);
+    } catch (error) {
+      console.error("An error occurred while fetching data: ", error);
+    }
+  };
+
+  useEffect(() => {
+    getDairyAll();
+  }, []);
 
   // 최초 위치 갱신
   const [curLocation, setCurLocation] = useState({ latitude: 0, longitude: 0 });
@@ -46,7 +70,7 @@ export default function MainDetailPage() {
 
   return (
     <Wrapper>
-      <ArrowBack />
+      <Img2 src={Arrow} />
       <KakaoSimpleMap onClick={() => navigate("/map")} />
       <ContentLayer>
         <Head1>
@@ -67,11 +91,9 @@ export default function MainDetailPage() {
         </Head1>
         <Content1>8개의 기록</Content1>
         <Content2>
-          <LongCard />
-          <LongCard />
-          <LongCard />
-          <LongCard />
-          <LongCard />
+          {dairyList.map((item, idx) => (
+            <LongCard item={item} />
+          ))}
         </Content2>
       </ContentLayer>
     </Wrapper>
@@ -80,7 +102,7 @@ export default function MainDetailPage() {
 
 const Wrapper = styled.div`
   height: 100%;
-
+  position: relative;
   background: #f5f5f5;
 `;
 
@@ -181,4 +203,9 @@ const Img = styled.img`
   width: 142px;
   height: 98px;
   margin-top: 20px;
+`;
+
+const Img2 = styled.img`
+  position: absolute;
+  z-index: 10;
 `;

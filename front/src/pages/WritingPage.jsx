@@ -125,6 +125,7 @@ export default function WritingPage() {
       );
       setIsLoading(false);
       console.log(response.data.data);
+      navigate("/variation", { state: response.data.data });
       return response.data;
     } catch (error) {
       setIsLoading(false);
