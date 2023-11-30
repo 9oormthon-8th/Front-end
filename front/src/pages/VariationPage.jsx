@@ -22,7 +22,7 @@ const VariationPage = () => {
   const patchDairyDetail = async () => {
     try {
       const response = await axios.patch(
-        `https://kea3f874ea848a.user-app.krampoline.com/api/dairy/${state.id}`,
+        `/api/dairy/${state.id}`,
         {
           // body
           dairyContent: dairyDetail.dairyContent,
