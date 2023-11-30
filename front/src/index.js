@@ -5,6 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MainPage from "./pages/MainPage";
+import MainDetailPage from "./pages/MainDetailPage";
 import LoginPage from "./pages/LoginPage";
 import MapPage from "./pages/MapPage";
 import WritingPage from "./pages/WritingPage";
@@ -17,6 +18,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, path: "/", element: <LoginPage /> },
       { path: "/main", element: <MainPage /> },
+      { path: "/main/detail", element: <MainDetailPage /> },
       { path: "/map", element: <MapPage /> },
       { path: "/writing", element: <WritingPage /> },
       { path: "/variation", element: <VariationPage /> },
