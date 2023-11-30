@@ -48,6 +48,7 @@ export default function WritingPage() {
       keywordArray.push(keywordInput);
     }
     setKeywordInput("");
+    console.log(keywordArray);
   };
 
   const deleteKeyword = (i) => {
@@ -115,7 +116,7 @@ export default function WritingPage() {
           latitude: latitudeValue,
           longitude: longitudeValue,
           location: title,
-          keyword: keywordArray.toString(),
+          keyword: keywordArray.join(","),
           date: date,
           roadAddress: addressValue,
         },
@@ -186,10 +187,14 @@ export default function WritingPage() {
           />
           <Img src={PlusIcon} alt="" onClick={() => addKeyword()} />
         </InputWithIcon>
-
-        {keywordArray.map((keyword, idx) => (
-          <button onClick={() => deleteKeyword(idx)}>{keyword}</button>
-        ))}
+        <Tags>
+          {keywordArray.map((keyword, idx) => (
+            <Tag>
+              <div>{keyword}</div>
+              <div onClick={() => deleteKeyword(idx)}>x</div>
+            </Tag>
+          ))}
+        </Tags>
 
         <StyledButton>
           <StyledTypo onClick={() => postNewChallenge()}>변환하기</StyledTypo>
@@ -272,4 +277,47 @@ const LoadingOverlay = styled.div`
   align-items: center; /* 수직 중앙 정렬 */
   background-color: rgba(0, 0, 0, 0.5); /* 어두운 배경 */
   z-index: 1000; /* 다른 요소들 위에 표시 */
+`;
+
+const Tags = styled.div`
+  display: flex;
+
+  gap: 6px;
+
+  margin-top: 6px;
+`;
+
+const Tag = styled.div`
+  min-width: 65px;
+  height: 30px;
+
+  border-radius: 16px;
+  border: 1px solid #ffdc26;
+  background: #fff8b6;
+
+  color: #ffa800;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 4px;
+  padding: 3px;
+  div:nth-child(1) {
+    min-width: 45px;
+
+    white-space: nowrap; /* 텍스트가 한 줄로만 나오도록 설정합니다. */
+    overflow: hidden; /* 내용이 넘칠 경우 자르고 숨깁니다. */
+    text-overflow: ellipsis;
+  }
+
+  div:nth-child(2) {
+    cursor: pointer;
+  }
 `;

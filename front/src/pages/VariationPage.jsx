@@ -87,7 +87,7 @@ const VariationPage = () => {
 
         <KeyWord>키워드</KeyWord>
         <Tags>
-          {dairyDetail.keyword.split(", ").map((tag) => (
+          {dairyDetail.keyword.split(",").map((tag) => (
             <Tag>{tag}</Tag>
           ))}
           <Plus>추가 +</Plus>

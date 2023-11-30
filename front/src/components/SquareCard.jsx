@@ -1,10 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import picture from "../assets/picture.svg";
+import { useNavigate } from "react-router-dom";
 
 const SquareCard = ({ props, title, date }) => {
+  const navigate = useNavigate();
   return (
-    <StyledCard>
+    <StyledCard onClick={() => navigate("/detail")}>
       <Img src={props}></Img>
       <StyledTitle>{title}</StyledTitle>
       <StyledContent>{date}</StyledContent>
