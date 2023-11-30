@@ -47,8 +47,14 @@ const KakaoMap = () => {
     setMarkerOpen(true);
   };
 
-  const [level, setLevel] = useState(11);
+  const [level, setLevel] = useState(10);
   const [curLocation, setCurLocation] = useState({ latitude: 0, longitude: 0 });
+
+  // 맵 화면 위치
+  const [state, setState] = useState({
+    center: { lat: 33.450705, lng: 126.570677 },
+    isPanto: true,
+  });
 
   // 현위치
   useEffect(() => {
@@ -71,14 +77,27 @@ const KakaoMap = () => {
       );
     }
   }, []);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(
+        (position) => {
+          setState({
+            center: {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            },
+          });
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+  }, []);
+
   console.log(curLocation);
-
-  // 맵 화면 위치
-  const [state, setState] = useState({
-    center: { lat: 33.450705, lng: 126.570677 },
-    isPanto: true,
-  });
-
+  console.log(state);
   return (
     <div>
       <Map
@@ -141,6 +160,13 @@ const KakaoMap = () => {
           alt="글쓰기"
           style={{ width: 75, heigh: 28 }}
         />
+      </div>
+
+      <div>
+        curlocation : {curLocation.latitude} {curLocation.longitude}
+      </div>
+      <div>
+        state : {state.center.lat} {state.center.lng}
       </div>
     </div>
   );
