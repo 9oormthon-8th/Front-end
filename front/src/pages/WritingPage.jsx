@@ -12,10 +12,6 @@ export default function WritingPage() {
   const navigate = useNavigate();
   const { state } = useLocation();
 
-  console.log(state.address);
-  console.log(state.curLocation.latitude);
-  console.log(state.curLocation.longitude);
-
   // 장소, 위치
   const [latitudeValue, setLatitudeValue] = useState(
     state.curLocation.latitude
@@ -25,8 +21,11 @@ export default function WritingPage() {
   );
   const [addressValue, setAddressValue] = useState(state.address);
   const [title, setTitle] = useState("");
-  const [keyword, setKeyword] = useState("");
   const [date, setDate] = useState("");
+  const [keywordArray, setKeywordArray] = useState([]);
+  const [keywordInput, setKeywordInput] = useState("");
+
+  const [keyword, setKeyword] = useState("");
 
   const handleTitle = (e) => {
     setTitle(e.target.value);
@@ -34,6 +33,26 @@ export default function WritingPage() {
 
   const handleDate = (e) => {
     setDate(e.target.value);
+  };
+
+  const handleKeyword = (e) => {
+    setKeywordInput(e.target.value);
+    console.log(e.target.value);
+  };
+
+  const addKeyword = () => {
+    if (keywordInput !== "") {
+      keywordArray.push(keywordInput);
+    }
+    setKeywordInput("");
+  };
+
+  const deleteKeyword = (i) => {
+    console.log("deleteKeyword");
+    let tmp = keywordArray.filter((element, idx) => {
+      return idx !== i;
+    });
+    setKeywordArray(tmp);
   };
 
   // 주소 검색 모달
@@ -92,7 +111,7 @@ export default function WritingPage() {
           latitude: latitudeValue,
           longitude: longitudeValue,
           location: title,
-          keyword: "추위, 바람, 즐거움",
+          keyword: keywordArray.toString(),
         },
         {
           "Content-Type": "application/json",
@@ -142,14 +161,22 @@ export default function WritingPage() {
         />
 
         <StyledText>키워드</StyledText>
-
         <InputWithIcon>
-          <StyledInput type="text" onChange={handleDate} placeholder="즐거움" />
-          <Img src={PlusIcon} alt="" onClick={() => postNewChallenge()} />
+          <StyledInput
+            type="text"
+            onChange={handleKeyword}
+            placeholder="즐거움"
+            value={keywordInput}
+          />
+          <Img src={PlusIcon} alt="" onClick={() => addKeyword()} />
         </InputWithIcon>
 
+        {keywordArray.map((keyword, idx) => (
+          <button onClick={() => deleteKeyword(idx)}>{keyword}</button>
+        ))}
+
         <StyledButton>
-          <StyledTypo>변환하기</StyledTypo>
+          <StyledTypo onClick={() => postNewChallenge()}>변환하기</StyledTypo>
         </StyledButton>
       </Wrapper>
     </div>
