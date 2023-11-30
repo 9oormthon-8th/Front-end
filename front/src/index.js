@@ -9,6 +9,7 @@ import LoginPage from "./pages/LoginPage";
 import MapPage from "./pages/MapPage";
 import WritingPage from "./pages/WritingPage";
 import VariationPage from "./pages/VariationPage";
+import MainDetailPage from "./pages/MainDetailPage";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, path: "/", element: <LoginPage /> },
       { path: "/main", element: <MainPage /> },
+      { path: "/detail", element: <MainDetailPage /> },
       { path: "/map", element: <MapPage /> },
       { path: "/writing", element: <WritingPage /> },
       { path: "/variation", element: <VariationPage /> },
