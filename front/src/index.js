@@ -10,6 +10,7 @@ import MapPage from "./pages/MapPage";
 import WritingPage from "./pages/WritingPage";
 import VariationPage from "./pages/VariationPage";
 import MainDetailPage from "./pages/MainDetailPage";
+import VariationDetailPage from "./pages/VariationDetailPage";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
       { path: "/map", element: <MapPage /> },
       { path: "/writing", element: <WritingPage /> },
       { path: "/variation", element: <VariationPage /> },
+      { path: "/variation/detail", element: <VariationDetailPage /> },
     ],
   },
 ]);
