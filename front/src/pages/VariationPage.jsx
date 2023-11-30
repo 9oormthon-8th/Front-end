@@ -22,7 +22,7 @@ const VariationPage = () => {
   const patchDairyDetail = async () => {
     try {
       const response = await axios.patch(
-        `https://www.sopt-demo.p-e.kr/dairy/${state.id}`,
+        `https://kea3f874ea848a.user-app.krampoline.com/api/dairy/${state.id}`,
         {
           // body
           dairyContent: dairyDetail.dairyContent,
@@ -37,35 +37,6 @@ const VariationPage = () => {
       console.error("An error occurred while fetching data: ", error);
     }
   };
-
-  // const getDairyDetail = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `https://www.sopt-demo.p-e.kr/dairy/detail/4`,
-  //       {
-  //         // body
-  //       },
-  //       {
-  //         // header
-  //         "Content-Type": "application/json",
-  //       }
-  //     );
-  //     console.log("getDairyDetail", response.data.data);
-  //     setDairyDetail({
-  //       location: response.data.data.location,
-  //       roadAddress: response.data.data.roadAddress,
-  //       date: response.data.data.date,
-  //       keyword: response.data.data.keyword,
-  //       dairyContent: response.data.data.dairyContent,
-  //     });
-  //   } catch (error) {
-  //     console.error("An error occurred while fetching data: ", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getDairyDetail();
-  // }, []);
 
   const changeContent = (event) => {
     // dairyDetail 복사

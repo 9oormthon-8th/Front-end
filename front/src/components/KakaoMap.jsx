@@ -23,7 +23,7 @@ const KakaoMap = () => {
   const getDairyAll = async () => {
     try {
       const response = await axios.get(
-        `https://www.sopt-demo.p-e.kr/dairy/all`,
+        `https://kea3f874ea848a.user-app.krampoline.com/api/dairy/all`,
         {},
         {
           "Content-Type": "application/json",
