@@ -161,13 +161,6 @@ const KakaoMap = () => {
           style={{ width: 75, heigh: 28 }}
         />
       </div>
-
-      <div>
-        curlocation : {curLocation.latitude} {curLocation.longitude}
-      </div>
-      <div>
-        state : {state.center.lat} {state.center.lng}
-      </div>
     </div>
   );
 };
