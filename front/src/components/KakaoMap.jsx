@@ -13,28 +13,28 @@ const geolocationOptions = {
 };
 
 const KakaoMap = () => {
-  const dummyLoactions = [
-    {
-      title: "카카오",
-      latlng: { lat: 33.450705, lng: 126.570677 },
-      message: "카카오에 대한 기록",
-    },
-    {
-      title: "성산일출봉",
-      latlng: { lat: 33.459219, lng: 126.940698 },
-      message: "성산일출봉에 대한 기록",
-    },
-    {
-      title: "월정리",
-      latlng: { lat: 33.5564749, lng: 126.79586 },
-      message: "월정리에 대한 기록",
-    },
-    {
-      title: "신창풍차해안",
-      latlng: { lat: 33.345346, lng: 126.17766 },
-      message: "신창풍차차차차차차차.",
-    },
-  ];
+  const [dairyList, setDairyList] = useState([]);
+
+  // 다이어리 목록 불러오기
+  const getDairyAll = async () => {
+    try {
+      const response = await axios.get(
+        `https://www.sopt-demo.p-e.kr/dairy/all`,
+        {},
+        {
+          "Content-Type": "application/json",
+        }
+      );
+      console.log(response.data.data);
+      setDairyList(response.data.data);
+    } catch (error) {
+      console.error("An error occurred while fetching data: ", error);
+    }
+  };
+
+  useEffect(() => {
+    getDairyAll();
+  }, []);
 
   const navigate = useNavigate();
   useKakaoLoader();
@@ -63,7 +63,10 @@ const KakaoMap = () => {
   // 도로명 주소 불러오기
   useEffect(() => {
     const geocoder = new window.kakao.maps.services.Geocoder();
-    const coord = new window.kakao.maps.LatLng(curLocation.latitude, curLocation.longitude);
+    const coord = new window.kakao.maps.LatLng(
+      curLocation.latitude,
+      curLocation.longitude
+    );
     const callback = function (result, status) {
       console.log(result);
       if (status === window.kakao.maps.services.Status.OK) {
@@ -145,27 +148,31 @@ const KakaoMap = () => {
         }
       >
         {/* 내가 기록한 곳 */}
-        {dummyLoactions.map((loc, idx) => (
+        {dairyList.map((loc, idx) => (
           <MapMarker
-            key={`${loc.title}-${loc.latlng}`}
-            position={loc.latlng}
+            key={`${idx}-${loc.location}-${loc.dairyContent}`}
+            position={{ lat: loc.latitude, lng: loc.longitude }}
             image={{
               src:
-                selectedMarker && loc.title === selectedMarker.title
+                selectedMarker && loc.location === selectedMarker.location
                   ? "image/KakaoMap/SelectedMarker.png"
                   : "image/KakaoMap/Marker.png",
               size:
-                selectedMarker && loc.title === selectedMarker.title
+                selectedMarker && loc.location === selectedMarker.location
                   ? { width: 30, height: 30 }
                   : { width: 15, height: 15 },
             }}
-            title={loc.title}
+            title={loc.location}
             onClick={() => handleMarkerClick(loc)}
           />
         ))}
 
         {/* 내 위치 */}
-        {curLocation && <MapMarker position={{ lat: curLocation.latitude, lng: curLocation.longitude }} />}
+        {curLocation && (
+          <MapMarker
+            position={{ lat: curLocation.latitude, lng: curLocation.longitude }}
+          />
+        )}
         <div>
           {curLocation.latitude} / {curLocation.longitude}
         </div>
@@ -175,8 +182,10 @@ const KakaoMap = () => {
       {/* 마커 누를 때 나오는 바텀 */}
       {setMarkerOpen && selectedMarker && (
         <div>
-          <p>{selectedMarker.title}</p>
-          <p>{selectedMarker.message}</p>
+          <p>{selectedMarker.location}</p>
+          <p>{selectedMarker.dairyContent}</p>
+          <p>{selectedMarker.sdate}</p>
+          <p>{selectedMarker.keyword}</p>
         </div>
       )}
 
@@ -189,11 +198,23 @@ const KakaoMap = () => {
           setLevel(9)
         )}
       >
-        <img src="image/KakaoMap/MyLocation.png" alt="현위치" style={{ width: 25, heigh: 25 }} />
+        <img
+          src="image/KakaoMap/MyLocation.png"
+          alt="현위치"
+          style={{ width: 25, heigh: 25 }}
+        />
       </div>
 
-      <div onClick={() => navigate("/writing", { state: { address, curLocation } })}>
-        <img src="image/KakaoMap/WriteButton.png" alt="글쓰기" style={{ width: 75, heigh: 28 }} />
+      <div
+        onClick={() =>
+          navigate("/writing", { state: { address, curLocation } })
+        }
+      >
+        <img
+          src="image/KakaoMap/WriteButton.png"
+          alt="글쓰기"
+          style={{ width: 75, heigh: 28 }}
+        />
       </div>
     </div>
   );

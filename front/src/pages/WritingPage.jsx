@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router";
 import DaumPostcodeEmbed from "react-daum-postcode";
-import KakaoSimpleMap from "../components/KakaoSimpleMap";
+import ArrowBack from "../components/ArrowBack";
 
 export default function WritingPage() {
   const navigate = useNavigate();
@@ -104,7 +104,7 @@ export default function WritingPage() {
 
   return (
     <div>
-      <button>뒤로 가기</button>
+      <ArrowBack />
       <dib>글 쓰기</dib>
       <div>장소</div>
       <input type="text" onChange={handleTitle} />
