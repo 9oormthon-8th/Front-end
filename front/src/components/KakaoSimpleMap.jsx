@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import useKakaoLoader from "../hooks/useKakaoLoader";
 import { useGeoLocation } from "../hooks/useGeoLocation";
+import arrow_expand from "../assets/icons/arrow-expand.svg";
+import { styled } from "styled-components";
 
 const geolocationOptions = {
   enableHighAccuracy: true,
@@ -48,13 +50,15 @@ const KakaoSimpleMap = () => {
   });
 
   return (
-    <div>
+    <Wrapper>
+      <Img src={arrow_expand} onClick={() => navigate("/map")} />
       <Map
         center={state.center}
-        style={{ width: "400px", height: "400px" }}
+        style={{ width: "430px", height: "235px" }}
         level={level}
         draggable={false}
         zoomable={false}
+        disableDoubleClickZoom={true}
       >
         {dummyLoactions.map((loc, idx) => (
           <MapMarker
@@ -70,8 +74,17 @@ const KakaoSimpleMap = () => {
 
         {curLocation && <MapMarker position={{ lat: curLocation.latitude, lng: curLocation.longitude }} />}
       </Map>
-    </div>
+    </Wrapper>
   );
 };
+const Wrapper = styled.div`
+  position: relative;
+`;
+const Img = styled.img`
+  position: absolute;
 
+  top: 200px;
+  right: 10px;
+  z-index: 99;
+`;
 export default KakaoSimpleMap;
