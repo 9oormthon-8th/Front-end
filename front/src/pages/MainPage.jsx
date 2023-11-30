@@ -23,7 +23,7 @@ const MainPage = () => {
           <Folder>4개의 폴더</Folder>
           <FolderBtn>+ 폴더</FolderBtn>
         </Secetion1>
-        <Secetion2 onClick={() => navigate("/detail")}>
+        <Secetion2>
           <SquareCard
             props={cardImage2}
             title="구름톤"
@@ -117,7 +117,7 @@ const Secetion2 = styled.div`
   flex-wrap: wrap; /* 자식 요소들을 여러 행으로 나눔 */
   justify-content: space-between;
   /* height: 90%; 최대 높이 설정 (원하는 값으로 조절) */
-  height: 90%;
+  /* height: 90%; */
   overflow-y: scroll;
 `;
 export default MainPage;
