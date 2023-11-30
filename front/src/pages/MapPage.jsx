@@ -6,9 +6,9 @@ const MapPage = () => {
   const location = useLocation();
 
   return (
-    <div>
+    <>
       <KakaoMap />
-    </div>
+    </>
   );
 };
 
