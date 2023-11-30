@@ -7,14 +7,22 @@ const ArrowBack = ({ title }) => {
   const navigate = useNavigate();
 
   return (
-    <div>
-      <div onClick={() => navigate(-1)}>
+    <Container>
+      <BackButton onClick={() => navigate(-1)}>
         <img src={Arrow} />
-      </div>
+      </BackButton>
       <StyledText>{title}</StyledText>
-    </div>
+    </Container>
   );
 };
+
+const BackButton = styled.div`
+  cursor: pointer;
+`;
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 const StyledText = styled.text`
   color: #000;
