@@ -11,12 +11,12 @@ const ArrowBack = ({ title }) => {
       <div onClick={() => navigate(-1)}>
         <img src={Arrow} />
       </div>
-      <Text>{title}</Text>
+      <StyledText>{title}</StyledText>
     </div>
   );
 };
 
-const Text = styled.text`
+const StyledText = styled.text`
   color: #000;
   font-family: Pretendard;
   font-size: 20px;
