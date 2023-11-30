@@ -5,6 +5,7 @@ import useKakaoLoader from "../hooks/useKakaoLoader";
 import { useGeoLocation } from "../hooks/useGeoLocation";
 import arrow_expand from "../assets/icons/arrow-expand.svg";
 import { styled } from "styled-components";
+import axios from "axios";
 
 const geolocationOptions = {
   enableHighAccuracy: true,
@@ -13,32 +14,30 @@ const geolocationOptions = {
 };
 
 const KakaoSimpleMap = () => {
-  const dummyLoactions = [
-    {
-      title: "카카오",
-      latlng: { lat: 33.450705, lng: 126.570677 },
-      message: "카카오에 대한 기록",
-    },
-    {
-      title: "성산일출봉",
-      latlng: { lat: 33.459219, lng: 126.940698 },
-      message: "성산일출봉에 대한 기록",
-    },
-    {
-      title: "월정리",
-      latlng: { lat: 33.5564749, lng: 126.79586 },
-      message: "월정리에 대한 기록",
-    },
-    {
-      title: "신창풍차해안",
-      latlng: { lat: 33.345346, lng: 126.17766 },
-      message: "신창풍차차차차차차차.",
-    },
-  ];
-
   const navigate = useNavigate();
-
   useKakaoLoader();
+
+  const [dairyList, setDairyList] = useState([]);
+
+  // 다이어리 목록 불러오기
+  const getDairyAll = async () => {
+    try {
+      const response = await axios.get(
+        `https://www.sopt-demo.p-e.kr/dairy/all`,
+        {},
+        {
+          "Content-Type": "application/json",
+        }
+      );
+      console.log(response.data.data);
+      setDairyList(response.data.data);
+    } catch (error) {
+      console.error("An error occurred while fetching data: ", error);
+    }
+  };
+  useEffect(() => {
+    getDairyAll();
+  }, []);
 
   const [level, setLevel] = useState(11);
   const [curLocation, setCurLocation] = useState({ latitude: 0, longitude: 0 });
@@ -60,10 +59,10 @@ const KakaoSimpleMap = () => {
         zoomable={false}
         disableDoubleClickZoom={true}
       >
-        {dummyLoactions.map((loc, idx) => (
+        {dairyList.map((loc, idx) => (
           <MapMarker
-            key={`${loc.title}-${loc.latlng}`}
-            position={loc.latlng}
+            key={`${idx}-${loc.location}-${loc.dairyContent}`}
+            position={{ lat: loc.latitude, lng: loc.longitude }}
             image={{
               src: "image/KakaoMap/Marker.png",
               size: { width: 15, height: 15 },
@@ -72,7 +71,11 @@ const KakaoSimpleMap = () => {
           />
         ))}
 
-        {curLocation && <MapMarker position={{ lat: curLocation.latitude, lng: curLocation.longitude }} />}
+        {curLocation && (
+          <MapMarker
+            position={{ lat: curLocation.latitude, lng: curLocation.longitude }}
+          />
+        )}
       </Map>
     </Wrapper>
   );

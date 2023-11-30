@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import LongCard from "../components/LongCard";
@@ -7,6 +7,41 @@ import KakaoSimpleMap from "../components/KakaoSimpleMap";
 
 export default function MainDetailPage() {
   const navigate = useNavigate();
+
+  // 최초 위치 갱신
+  const [curLocation, setCurLocation] = useState({ latitude: 0, longitude: 0 });
+  const [address, setAddress] = useState();
+  // 도로명 주소 불러오기
+  useEffect(() => {
+    const geocoder = new window.kakao.maps.services.Geocoder();
+    const coord = new window.kakao.maps.LatLng(
+      curLocation.latitude,
+      curLocation.longitude
+    );
+    const callback = function (result, status) {
+      console.log(result);
+      if (status === window.kakao.maps.services.Status.OK) {
+        setAddress(result[0].address.address_name);
+      }
+    };
+    geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+  }, [curLocation]);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(
+        (position) => {
+          setCurLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+  }, []);
 
   return (
     <Wrapper>
@@ -23,7 +58,13 @@ export default function MainDetailPage() {
               <div>2000.00.00 ~ 00,00</div>
             </Info1>
           </Info>
-          <button onClick={() => navigate("/writing")}>+ 글쓰기</button>
+          <button
+            onClick={() =>
+              navigate("/writing", { state: { address, curLocation } })
+            }
+          >
+            + 글쓰기
+          </button>
         </Head1>
         <Content1>8개의 기록</Content1>
         <Content2>
