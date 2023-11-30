@@ -112,6 +112,8 @@ export default function WritingPage() {
           longitude: longitudeValue,
           location: title,
           keyword: keywordArray.toString(),
+          date: date,
+          roadAddress: addressValue,
         },
         {
           "Content-Type": "application/json",
@@ -123,6 +125,8 @@ export default function WritingPage() {
       console.error("An error occurred while fetching data: ", error);
     }
   };
+
+  console.log(date);
 
   return (
     <div>

@@ -2,12 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import picture from "../assets/picture.svg";
 
-const SquareCard = () => {
+const SquareCard = ({ props, title, date }) => {
   return (
     <StyledCard>
-      <Img src={picture}></Img>
-      <StyledTitle>구름톤</StyledTitle>
-      <StyledContent>2023.11.20 - 11.30</StyledContent>
+      <Img src={props}></Img>
+      <StyledTitle>{title}</StyledTitle>
+      <StyledContent>{date}</StyledContent>
     </StyledCard>
   );
 };
@@ -30,8 +30,6 @@ const StyledCard = styled.div`
 const Img = styled.img`
   width: 142px;
   height: 98px;
-  object-fit: cover;
-
   margin-top: 20px;
 `;
 
