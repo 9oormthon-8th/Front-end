@@ -13,31 +13,30 @@ const geolocationOptions = {
 };
 
 const KakaoMap = () => {
-  const dummyLoactions = [
-    {
-      title: "카카오",
-      latlng: { lat: 33.450705, lng: 126.570677 },
-      message: "카카오에 대한 기록",
-    },
-    {
-      title: "성산일출봉",
-      latlng: { lat: 33.459219, lng: 126.940698 },
-      message: "성산일출봉에 대한 기록",
-    },
-    {
-      title: "월정리",
-      latlng: { lat: 33.5564749, lng: 126.79586 },
-      message: "월정리에 대한 기록",
-    },
-    {
-      title: "신창풍차해안",
-      latlng: { lat: 33.345346, lng: 126.17766 },
-      message: "신창풍차차차차차차차.",
-    },
-  ];
+  const [dairyList, setDairyList] = useState([]);
+
+  // 다이어리 목록 불러오기
+  const getDairyAll = async () => {
+    try {
+      const response = await axios.get(
+        `https://www.sopt-demo.p-e.kr/dairy/all`,
+        {},
+        {
+          "Content-Type": "application/json",
+        }
+      );
+      console.log(response.data.data);
+      setDairyList(response.data.data);
+    } catch (error) {
+      console.error("An error occurred while fetching data: ", error);
+    }
+  };
+
+  useEffect(() => {
+    getDairyAll();
+  }, []);
 
   const navigate = useNavigate();
-
   useKakaoLoader();
 
   // 확대 수준
@@ -61,32 +60,21 @@ const KakaoMap = () => {
   // 현주소
   const [address, setAddress] = useState();
 
-  const mapApi = async () => {
-    console.log(curLocation);
-    try {
-      let response = await axios
-        .get(
-          `https://dapi.kakao.com/v2/local/geo/coord2address.json?input_coord=WGS84&x=${curLocation.latitude}&y=${curLocation.longitude}`,
-          {
-            headers: {
-              Authorization: "KakaoAK 8ef1e6396cc8eb4082782ebb2f2b130c",
-            },
-          }
-        )
-        .then((response) => {
-          const location = response.data.documents[0];
-          console.log("then", response);
-          setAddress(location);
-          console.log({
-            si: location.address.region_1depth_name,
-            gu: location.address.region_2depth_name,
-            dong: location.address.region_3depth_name,
-          });
-        });
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+  // 도로명 주소 불러오기
+  useEffect(() => {
+    const geocoder = new window.kakao.maps.services.Geocoder();
+    const coord = new window.kakao.maps.LatLng(
+      curLocation.latitude,
+      curLocation.longitude
+    );
+    const callback = function (result, status) {
+      console.log(result);
+      if (status === window.kakao.maps.services.Status.OK) {
+        setAddress(result[0].address.address_name);
+      }
+    };
+    geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+  }, [curLocation]);
 
   // 현위치
   useEffect(() => {
@@ -98,7 +86,6 @@ const KakaoMap = () => {
               latitude: position.coords.latitude,
               longitude: position.coords.longitude,
             });
-            mapApi();
           },
           (error) => {
             console.log(error);
@@ -117,6 +104,9 @@ const KakaoMap = () => {
     }, 3000);
   }, []);
 
+  useEffect(() => {}, [curLocation]);
+
+  // 최초 위치 갱신
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition(
@@ -127,6 +117,10 @@ const KakaoMap = () => {
               lng: position.coords.longitude,
             },
           });
+          setCurLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
         },
         (error) => {
           console.log(error);
@@ -135,36 +129,40 @@ const KakaoMap = () => {
     }
   }, []);
 
-  // 내 위도 경도
-  console.log(curLocation);
-  // 내 주소
-  console.log(address);
-
   return (
     <div>
       <ArrowBack title="" />
       <Map
+        id="map"
         center={state.center}
         isPanto={state.isPanto}
         style={{ width: "400px", height: "600px" }}
         level={level}
+        onDragEnd={(map) =>
+          setState({
+            center: {
+              lat: map.getCenter().getLat(),
+              lng: map.getCenter().getLng(),
+            },
+          })
+        }
       >
         {/* 내가 기록한 곳 */}
-        {dummyLoactions.map((loc, idx) => (
+        {dairyList.map((loc, idx) => (
           <MapMarker
-            key={`${loc.title}-${loc.latlng}`}
-            position={loc.latlng}
+            key={`${idx}-${loc.location}-${loc.dairyContent}`}
+            position={{ lat: loc.latitude, lng: loc.longitude }}
             image={{
               src:
-                selectedMarker && loc.title === selectedMarker.title
+                selectedMarker && loc.location === selectedMarker.location
                   ? "image/KakaoMap/SelectedMarker.png"
                   : "image/KakaoMap/Marker.png",
               size:
-                selectedMarker && loc.title === selectedMarker.title
+                selectedMarker && loc.location === selectedMarker.location
                   ? { width: 30, height: 30 }
                   : { width: 15, height: 15 },
             }}
-            title={loc.title}
+            title={loc.location}
             onClick={() => handleMarkerClick(loc)}
           />
         ))}
@@ -175,13 +173,19 @@ const KakaoMap = () => {
             position={{ lat: curLocation.latitude, lng: curLocation.longitude }}
           />
         )}
+        <div>
+          {curLocation.latitude} / {curLocation.longitude}
+        </div>
+        <div>{address}</div>
       </Map>
 
       {/* 마커 누를 때 나오는 바텀 */}
       {setMarkerOpen && selectedMarker && (
         <div>
-          <p>{selectedMarker.title}</p>
-          <p>{selectedMarker.message}</p>
+          <p>{selectedMarker.location}</p>
+          <p>{selectedMarker.dairyContent}</p>
+          <p>{selectedMarker.sdate}</p>
+          <p>{selectedMarker.keyword}</p>
         </div>
       )}
 
@@ -201,7 +205,11 @@ const KakaoMap = () => {
         />
       </div>
 
-      <div onClick={() => navigate("/writing")}>
+      <div
+        onClick={() =>
+          navigate("/writing", { state: { address, curLocation } })
+        }
+      >
         <img
           src="image/KakaoMap/WriteButton.png"
           alt="글쓰기"
