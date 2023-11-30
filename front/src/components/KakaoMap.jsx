@@ -232,9 +232,9 @@ const KakaoMap = () => {
                 </button>
               </Info>
               <Card>
-                <LongCard />
-                <LongCard />
-                <LongCard />
+                {dairyList.map((item, idx) => (
+                  <LongCard item={item} />
+                ))}
               </Card>
             </>
           )}

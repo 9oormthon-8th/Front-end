@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 export default function LongCard({ item }) {
   const navigate = useNavigate();
-  console.log(item);
 
   return (
     <Card onClick={() => navigate("/variation/detail", { state: item.id })}>
