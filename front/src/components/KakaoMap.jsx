@@ -63,10 +63,7 @@ const KakaoMap = () => {
   // 도로명 주소 불러오기
   useEffect(() => {
     const geocoder = new window.kakao.maps.services.Geocoder();
-    const coord = new window.kakao.maps.LatLng(
-      curLocation.latitude,
-      curLocation.longitude
-    );
+    const coord = new window.kakao.maps.LatLng(curLocation.latitude, curLocation.longitude);
     const callback = function (result, status) {
       console.log(result);
       if (status === window.kakao.maps.services.Status.OK) {
@@ -168,11 +165,7 @@ const KakaoMap = () => {
         ))}
 
         {/* 내 위치 */}
-        {curLocation && (
-          <MapMarker
-            position={{ lat: curLocation.latitude, lng: curLocation.longitude }}
-          />
-        )}
+        {curLocation && <MapMarker position={{ lat: curLocation.latitude, lng: curLocation.longitude }} />}
         <div>
           {curLocation.latitude} / {curLocation.longitude}
         </div>
@@ -196,19 +189,11 @@ const KakaoMap = () => {
           setLevel(9)
         )}
       >
-        <img
-          src="image/KakaoMap/MyLocation.png"
-          alt="현위치"
-          style={{ width: 25, heigh: 25 }}
-        />
+        <img src="image/KakaoMap/MyLocation.png" alt="현위치" style={{ width: 25, heigh: 25 }} />
       </div>
 
-      <div onClick={() => navigate("/writing")}>
-        <img
-          src="image/KakaoMap/WriteButton.png"
-          alt="글쓰기"
-          style={{ width: 75, heigh: 28 }}
-        />
+      <div onClick={() => navigate("/writing", { state: { address, curLocation } })}>
+        <img src="image/KakaoMap/WriteButton.png" alt="글쓰기" style={{ width: 75, heigh: 28 }} />
       </div>
     </div>
   );

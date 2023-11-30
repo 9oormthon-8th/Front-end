@@ -68,11 +68,7 @@ const KakaoSimpleMap = () => {
           />
         ))}
 
-        {curLocation && (
-          <MapMarker
-            position={{ lat: curLocation.latitude, lng: curLocation.longitude }}
-          />
-        )}
+        {curLocation && <MapMarker position={{ lat: curLocation.latitude, lng: curLocation.longitude }} />}
       </Map>
     </div>
   );
