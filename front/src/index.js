@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import MainPage from "./pages/MainPage";
 import LoginPage from "./pages/LoginPage";
 import MapPage from "./pages/MapPage";
 import WritingPage from "./pages/WritingPage";
@@ -15,6 +16,7 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { index: true, path: "/", element: <LoginPage /> },
+      { path: "/main", element: <MainPage /> },
       { path: "/map", element: <MapPage /> },
       { path: "/writing", element: <WritingPage /> },
       { path: "/variation", element: <VariationPage /> },
