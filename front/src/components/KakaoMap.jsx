@@ -138,6 +138,14 @@ const KakaoMap = () => {
         isPanto={state.isPanto}
         style={{ width: "400px", height: "600px" }}
         level={level}
+        onDragEnd={(map) =>
+          setState({
+            center: {
+              lat: map.getCenter().getLat(),
+              lng: map.getCenter().getLng(),
+            },
+          })
+        }
       >
         {/* 내가 기록한 곳 */}
         {dummyLoactions.map((loc, idx) => (
