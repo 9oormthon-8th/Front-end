@@ -111,7 +111,7 @@ export default function WritingPage() {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        `https://kea3f874ea848a.user-app.krampoline.com/api/dairy`,
+        `/api/dairy`,
         {
           latitude: latitudeValue,
           longitude: longitudeValue,
