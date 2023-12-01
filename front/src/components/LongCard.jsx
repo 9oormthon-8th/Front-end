@@ -7,12 +7,9 @@ export default function LongCard({ item }) {
 
   return (
     <Card onClick={() => navigate("/variation/detail", { state: item.id })}>
-      <Title>
-        <div>성산</div>
-        <div>{item.date}</div>
-      </Title>
-      <Title1>{item.date}</Title1>
+      <Title1>{item.location}</Title1>
       <Desc>{item.dairyContent}</Desc>
+      <Date>{item.date}</Date>
       <Tags>
         {item.keyword.split(",").map((i, idx) => (
           <Tag>{i}</Tag>
@@ -24,7 +21,7 @@ export default function LongCard({ item }) {
 
 const Card = styled.div`
   width: 390px;
-  height: 169px;
+  min-height: 169px;
 
   border-radius: 16px;
   background: #fff;
@@ -60,11 +57,14 @@ const Title = styled.div`
 `;
 
 const Title1 = styled.div`
+  display: flex;
+  flex-direction: column;
+
   width: 337px;
 
   margin: 0 auto;
 
-  margin-top: 3px;
+  margin-top: 20px;
 
   color: #000;
   font-family: Pretendard;
@@ -82,8 +82,6 @@ const Desc = styled.div`
   white-space: nowrap;
   overflow: hidden;
 
-  margin-bottom: 25px;
-
   overflow: hidden;
   color: #979797;
   text-overflow: ellipsis;
@@ -94,7 +92,7 @@ const Desc = styled.div`
   font-weight: 500;
   line-height: normal;
 
-  margin-top: 6px;
+  margin-top: 12px;
 `;
 const Tags = styled.div`
   width: 337px;
@@ -104,7 +102,7 @@ const Tags = styled.div`
   display: flex;
   gap: 10px;
 
-  margin-bottom: 23px;
+  margin-top: 20px;
 `;
 const Tag = styled.div`
   width: 63px;
@@ -129,5 +127,20 @@ const Tag = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-top: 3px;
+  padding-top: 7px;
+`;
+const Date = styled.div`
+  width: 337px;
+
+  margin: 0 auto;
+
+  color: #979797;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+
+  margin-top: 3px;
+  margin-bottom: 5px;
 `;
