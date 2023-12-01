@@ -77,7 +77,7 @@ export default function MainDetailPage() {
 
   return (
     <Wrapper>
-      <Img2 src={Arrow} />
+      <Img2 src={Arrow} onClick={() => navigate(-1)} />
       <KakaoSimpleMap onClick={() => navigate("/map")} />
       <ContentLayer>
         <Head1>
