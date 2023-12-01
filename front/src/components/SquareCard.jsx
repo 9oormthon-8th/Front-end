@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import picture from "../assets/picture.svg";
 import { useNavigate } from "react-router-dom";
 
 const SquareCard = ({ props, title, date }) => {

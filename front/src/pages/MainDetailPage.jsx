@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import LongCard from "../components/LongCard";
 import cardImage2 from "../assets/cardImage2.svg";
-import ArrowBack from "../components/ArrowBack";
 import KakaoSimpleMap from "../components/KakaoSimpleMap";
 import axios from "axios";
 import Arrow from "../assets/icons/arrow_back2.svg";
+import { BASE_URL, GET_DIARY_LIST } from "../apis";
 
 export default function MainDetailPage() {
   const navigate = useNavigate();
@@ -16,13 +16,12 @@ export default function MainDetailPage() {
   const getDairyAll = async () => {
     try {
       const response = await axios.get(
-        `https://www.sopt-demo.p-e.kr/dairy/all`,
+        `${BASE_URL}${GET_DIARY_LIST}`,
         {},
         {
           "Content-Type": "application/json",
         }
       );
-      console.log(response.data.data);
       setDairyList(response.data.data);
     } catch (error) {
       console.error("An error occurred while fetching data: ", error);
@@ -44,7 +43,6 @@ export default function MainDetailPage() {
       curLocation.longitude
     );
     const callback = function (result, status) {
-      console.log(result);
       if (status === window.kakao.maps.services.Status.OK) {
         setAddress(result[0].address.address_name);
       }
@@ -53,19 +51,28 @@ export default function MainDetailPage() {
   }, [curLocation]);
 
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(
-        (position) => {
-          setCurLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    }
+    let polling = setInterval(() => {
+      if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(
+          (position) => {
+            setCurLocation({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            });
+          },
+          (error) => {},
+          {
+            enableHighAccuracy: true,
+            timeout: 3000,
+            maximumAge: 0,
+          }
+        );
+      }
+
+      return () => {
+        clearInterval(polling);
+      };
+    }, 3000);
   }, []);
 
   return (
@@ -106,15 +113,6 @@ const Wrapper = styled.div`
   background: #f5f5f5;
 `;
 
-const Header = styled.div`
-  height: 5%;
-
-  background: #ffffff;
-`;
-const MAP = styled.div`
-  height: 20%;
-  background-color: pink;
-`;
 const ContentLayer = styled.div`
   margin: 0 auto;
   height: 60%;
@@ -197,12 +195,6 @@ const Content2 = styled.div`
   height: 80%;
   min-height: 80%;
   overflow-y: scroll;
-`;
-
-const Img = styled.img`
-  width: 142px;
-  height: 98px;
-  margin-top: 20px;
 `;
 
 const Img2 = styled.img`

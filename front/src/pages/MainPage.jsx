@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import picture from "../assets/banner.png";
 import cardImage1 from "../assets/cardImage1.svg";
@@ -9,8 +8,6 @@ import cardImage4 from "../assets/cardImage4.svg";
 import SquareCard from "../components/SquareCard";
 
 const MainPage = () => {
-  const navigate = useNavigate();
-
   return (
     <Wrapper>
       <Picture src={picture}></Picture>

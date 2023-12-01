@@ -2,16 +2,10 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import useKakaoLoader from "../hooks/useKakaoLoader";
-import { useGeoLocation } from "../hooks/useGeoLocation";
 import arrow_expand from "../assets/icons/arrow-expand.svg";
 import { styled } from "styled-components";
 import axios from "axios";
-
-const geolocationOptions = {
-  enableHighAccuracy: true,
-  timeout: 1000 * 10,
-  maximumAge: 1000 * 3600 * 24,
-};
+import { BASE_URL, GET_DIARY_LIST } from "../apis";
 
 const KakaoSimpleMap = () => {
   const navigate = useNavigate();
@@ -23,13 +17,12 @@ const KakaoSimpleMap = () => {
   const getDairyAll = async () => {
     try {
       const response = await axios.get(
-        `https://www.sopt-demo.p-e.kr/dairy/all`,
+        `${BASE_URL}${GET_DIARY_LIST}`,
         {},
         {
           "Content-Type": "application/json",
         }
       );
-      console.log(response.data.data);
       setDairyList(response.data.data);
     } catch (error) {
       console.error("An error occurred while fetching data: ", error);
@@ -39,10 +32,13 @@ const KakaoSimpleMap = () => {
     getDairyAll();
   }, []);
 
+  // eslint-disable-next-line no-unused-vars
   const [level, setLevel] = useState(11);
+  // eslint-disable-next-line no-unused-vars
   const [curLocation, setCurLocation] = useState({ latitude: 0, longitude: 0 });
 
   // 맵 화면 위치
+  // eslint-disable-next-line no-unused-vars
   const [state, setState] = useState({
     center: { lat: 33.37666, lng: 126.54245 },
     isPanto: true,

@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { styled } from "styled-components";
 import TextArea from "../components/TextArea";
 import axios from "axios";
 import ArrowBack from "../components/ArrowBack";
 import ArrowRotate from "../assets/icons/arrow-rotate.svg";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { BASE_URL, PATCH_DIARY } from "../apis";
 
 const VariationPage = () => {
+  const navigate = useNavigate();
   const { state } = useLocation();
 
   const [dairyDetail, setDairyDetail] = useState({
@@ -19,50 +22,23 @@ const VariationPage = () => {
 
   const patchDairyDetail = async () => {
     try {
+      // eslint-disable-next-line no-unused-vars
       const response = await axios.patch(
-        `https://www.sopt-demo.p-e.kr/dairy/4`,
+        `${BASE_URL}${PATCH_DIARY}/${state.id}`,
         {
           // body
-          dairyContent: "화이팅화이팅화이팅",
+          dairyContent: dairyDetail.dairyContent,
         },
         {
           // header
           "Content-Type": "application/json",
         }
       );
+      navigate("/variation/detail", { state: state.id });
     } catch (error) {
       console.error("An error occurred while fetching data: ", error);
     }
   };
-
-  // const getDairyDetail = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `https://www.sopt-demo.p-e.kr/dairy/detail/4`,
-  //       {
-  //         // body
-  //       },
-  //       {
-  //         // header
-  //         "Content-Type": "application/json",
-  //       }
-  //     );
-  //     console.log("getDairyDetail", response.data.data);
-  //     setDairyDetail({
-  //       location: response.data.data.location,
-  //       roadAddress: response.data.data.roadAddress,
-  //       date: response.data.data.date,
-  //       keyword: response.data.data.keyword,
-  //       dairyContent: response.data.data.dairyContent,
-  //     });
-  //   } catch (error) {
-  //     console.error("An error occurred while fetching data: ", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getDairyDetail();
-  // }, []);
 
   const changeContent = (event) => {
     // dairyDetail 복사

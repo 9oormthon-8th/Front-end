@@ -2,19 +2,12 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import useKakaoLoader from "../hooks/useKakaoLoader";
-import { useGeoLocation } from "../hooks/useGeoLocation";
-import ArrowBack from "../components/ArrowBack";
 import axios from "axios";
 import { styled, css } from "styled-components";
 import search from "../assets/search.svg";
 import profile from "../assets/img1.svg";
 import LongCard from "./LongCard";
-
-const geolocationOptions = {
-  enableHighAccuracy: true,
-  timeout: 1000,
-  maximumAge: 0,
-};
+import { BASE_URL, GET_DIARY_LIST } from "../apis";
 
 const KakaoMap = () => {
   const [dairyList, setDairyList] = useState([]);
@@ -23,13 +16,12 @@ const KakaoMap = () => {
   const getDairyAll = async () => {
     try {
       const response = await axios.get(
-        `https://www.sopt-demo.p-e.kr/dairy/all`,
+        `${BASE_URL}${GET_DIARY_LIST}`,
         {},
         {
           "Content-Type": "application/json",
         }
       );
-      console.log(response.data.data);
       setDairyList(response.data.data);
     } catch (error) {
       console.error("An error occurred while fetching data: ", error);
@@ -52,17 +44,13 @@ const KakaoMap = () => {
     center: { lat: 33.450705, lng: 126.570677 },
     isPanto: true,
   });
-  // 마커 상세정보 모달
-  const [MarkerOpen, setMarkerOpen] = useState(false);
   // 선택된 마커 표시
   const [selectedMarker, setSelectedMarker] = useState(null);
   // 마커 클릭
   const handleMarkerClick = (marker) => {
-    console.log(marker);
     setSelectedMarker(marker);
     setState({ center: { lat: marker.latitude, lng: marker.longitude } });
     setLevel(8);
-    setMarkerOpen(true);
     setOnBar(true);
   };
   // 현주소
@@ -76,7 +64,6 @@ const KakaoMap = () => {
       curLocation.longitude
     );
     const callback = function (result, status) {
-      console.log(result);
       if (status === window.kakao.maps.services.Status.OK) {
         setAddress(result[0].address.address_name);
       }
@@ -95,9 +82,7 @@ const KakaoMap = () => {
               longitude: position.coords.longitude,
             });
           },
-          (error) => {
-            console.log(error);
-          },
+          (error) => {},
           {
             enableHighAccuracy: true,
             timeout: 3000,
@@ -130,9 +115,7 @@ const KakaoMap = () => {
             longitude: position.coords.longitude,
           });
         },
-        (error) => {
-          console.log(error);
-        }
+        (error) => {}
       );
     }
   }, []);
@@ -189,6 +172,7 @@ const KakaoMap = () => {
       <Content $isActive={onBar}>
         <Top>
           <img
+            alt="search"
             src={search}
             onClick={() => (
               setState({
@@ -197,6 +181,7 @@ const KakaoMap = () => {
                   lng: curLocation.longitude,
                 },
                 isPanto: true,
+                // eslint-disable-next-line no-sequences
               }),
               setLevel(9)
             )}
@@ -217,7 +202,7 @@ const KakaoMap = () => {
             <>
               <Info>
                 <Box1>
-                  <img src={profile} />
+                  <img src={profile} alt="profile" />
                   <Box2>
                     <div>구름톤</div>
                     <div>2023.11.20 ~ 11.30</div>
