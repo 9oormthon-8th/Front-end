@@ -1,6 +1,6 @@
 // EC2
-export const BASE_URL = "https://www.sopt-demo.p-e.kr";
-// export const BASE_URL = "/api";
+// export const BASE_URL = "https://www.sopt-demo.p-e.kr";
+export const BASE_URL = "/api";
 
 export const GET_DIARY_LIST = "/dairy/all";
 export const POST_DIARY = "/dairy";
