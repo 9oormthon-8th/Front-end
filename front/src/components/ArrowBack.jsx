@@ -9,7 +9,7 @@ const ArrowBack = ({ title }) => {
   return (
     <Container>
       <BackButton onClick={() => navigate(-1)}>
-        <img src={Arrow} />
+        <img src={Arrow} alt="arrow" />
       </BackButton>
       <StyledText>{title}</StyledText>
     </Container>

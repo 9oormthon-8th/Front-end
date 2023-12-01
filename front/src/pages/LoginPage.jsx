@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import mainLogo from "../assets/mainLogo.svg";
@@ -7,8 +7,6 @@ import kakaoTalkLogo from "../assets/icons/kakaoTalkLogo.svg";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-
-  const [location, setLoacation] = useState(0);
 
   return (
     <Wrapper>

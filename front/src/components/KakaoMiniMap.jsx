@@ -57,9 +57,7 @@ const KakaoMiniMap = () => {
             longitude: position.coords.longitude,
           });
         },
-        (error) => {
-          console.log(error);
-        },
+        (error) => {},
         {
           enableHighAccuracy: true,
           timeout: 3000,
@@ -80,9 +78,7 @@ const KakaoMiniMap = () => {
             },
           });
         },
-        (error) => {
-          console.log(error);
-        }
+        (error) => {}
       );
     }
   }, []);

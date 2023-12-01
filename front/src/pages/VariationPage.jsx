@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { styled } from "styled-components";
 import TextArea from "../components/TextArea";
 import axios from "axios";
@@ -6,6 +6,7 @@ import ArrowBack from "../components/ArrowBack";
 import ArrowRotate from "../assets/icons/arrow-rotate.svg";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL, PATCH_DIARY } from "../apis";
 
 const VariationPage = () => {
   const navigate = useNavigate();
@@ -21,8 +22,9 @@ const VariationPage = () => {
 
   const patchDairyDetail = async () => {
     try {
+      // eslint-disable-next-line no-unused-vars
       const response = await axios.patch(
-        `/api/dairy/${state.id}`,
+        `${BASE_URL}${PATCH_DIARY}/${state.id}`,
         {
           // body
           dairyContent: dairyDetail.dairyContent,

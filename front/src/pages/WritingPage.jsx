@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router";
-import DaumPostcodeEmbed from "react-daum-postcode";
+// import DaumPostcodeEmbed from "react-daum-postcode";
 import ArrowBack from "../components/ArrowBack";
 import styled from "styled-components";
 import PlusIcon from "../assets/icons/plus.svg";
 import Search from "../assets/icons/search.svg";
 import CircularProgress from "@mui/material/CircularProgress";
+import { BASE_URL, POST_DIARY } from "../apis";
 
 export default function WritingPage() {
   const navigate = useNavigate();
@@ -16,9 +17,11 @@ export default function WritingPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   // 장소, 위치
+  // eslint-disable-next-line no-unused-vars
   const [latitudeValue, setLatitudeValue] = useState(
     state.curLocation.latitude
   );
+  // eslint-disable-next-line no-unused-vars
   const [longitudeValue, setLongitudeValue] = useState(
     state.curLocation.longitude
   );
@@ -27,8 +30,6 @@ export default function WritingPage() {
   const [date, setDate] = useState("");
   const [keywordArray, setKeywordArray] = useState([]);
   const [keywordInput, setKeywordInput] = useState("");
-
-  const [keyword, setKeyword] = useState("");
 
   const handleTitle = (e) => {
     setTitle(e.target.value);
@@ -40,7 +41,6 @@ export default function WritingPage() {
 
   const handleKeyword = (e) => {
     setKeywordInput(e.target.value);
-    console.log(e.target.value);
   };
 
   const addKeyword = () => {
@@ -48,11 +48,9 @@ export default function WritingPage() {
       keywordArray.push(keywordInput);
     }
     setKeywordInput("");
-    console.log(keywordArray);
   };
 
   const deleteKeyword = (i) => {
-    console.log("deleteKeyword");
     let tmp = keywordArray.filter((element, idx) => {
       return idx !== i;
     });
@@ -60,12 +58,15 @@ export default function WritingPage() {
   };
 
   // 주소 검색 모달
+  // eslint-disable-next-line no-unused-vars
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // eslint-disable-next-line no-unused-vars
   const searchAddress = () => {
     setIsModalOpen(true);
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleComplete = (data) => {
     let fullAddress = data.address;
     let extraAddress = "";
@@ -81,7 +82,6 @@ export default function WritingPage() {
       fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
     }
 
-    console.log(fullAddress);
     setAddressValue(fullAddress);
   };
 
@@ -102,16 +102,16 @@ export default function WritingPage() {
   //   }
   // };
 
-  // useEffect (주소가 바뀌면 위경도 갱신)
-  useEffect(() => {
-    // getNewPosition();
-  }, [addressValue]);
+  //  (주소가 바뀌면 위경도 갱신)
+  // useEffect(() => {
+  // getNewPosition();
+  // }, [addressValue]);
 
   const postNewChallenge = async () => {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        `/api/dairy`,
+        `${BASE_URL}${POST_DIARY}`,
         {
           latitude: latitudeValue,
           longitude: longitudeValue,
@@ -125,7 +125,6 @@ export default function WritingPage() {
         }
       );
       setIsLoading(false);
-      console.log(response.data.data);
       navigate("/variation", { state: response.data.data });
       return response.data;
     } catch (error) {
@@ -133,8 +132,6 @@ export default function WritingPage() {
       console.error("An error occurred while fetching data: ", error);
     }
   };
-
-  console.log(date);
 
   return (
     <div>
