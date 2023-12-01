@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ArrowBack from "../components/ArrowBack";
 import { styled } from "styled-components";
@@ -8,6 +9,7 @@ import { BASE_URL, GET_DIARY_DETAIL } from "../apis";
 const VariationDetailPage = () => {
   const [dairyDetail, setDairyDetail] = useState([]);
   const { state } = useLocation();
+  const navigate = useNavigate();
 
   const getDairyDetail = async () => {
     try {
@@ -43,7 +45,6 @@ const VariationDetailPage = () => {
       <Wrapper>
         <ArrowBack title="" />
         <Content>
-          <Title>성산</Title>
           <SubTitle>{dairyDetail.location}</SubTitle>
           <Address>{dairyDetail.roadAddress}</Address>
           <Calendar>{dairyDetail.date}</Calendar>
@@ -54,6 +55,7 @@ const VariationDetailPage = () => {
               <Tag>{tag}</Tag>
             ))}
           </Tags>
+          <Btn onClick={() => navigate("/")}>다시시작</Btn>
         </Content>
       </Wrapper>
     </div>
@@ -64,7 +66,7 @@ const Wrapper = styled.div``;
 
 const Content = styled.div`
   width: 95%;
-
+  height: 100%;
   margin: 0 auto;
 `;
 
@@ -88,7 +90,7 @@ const SubTitle = styled.div`
   font-weight: 700;
   line-height: normal;
 
-  margin-top: 12px;
+  margin-top: 40px;
 `;
 
 const Address = styled.div`
@@ -152,6 +154,26 @@ const Tag = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const Btn = styled.button`
+  width: 390px;
+  height: 30px;
+  border-radius: 4px;
+  background: #00d67c;
+
+  border: none;
+
+  color: #fff;
+
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  margin-top: 25px;
 `;
 
 export default VariationDetailPage;
