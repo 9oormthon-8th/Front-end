@@ -1,6 +1,6 @@
-# 🍊 로그하맨 : AI기반 제주도 여행기록 서비스
+# 🍊 로그하맨 : AI기반 제주도 여행기록 서비스 
 > 또 다른 내가 담아주는 제주도의 기억
-##### 말하는 귤, 9oormthon in JEJU 8기
+##### 말하는 귤, 9oormthon in JEJU 8기 🏆최우수상
 
 <img width="1920" alt="표지" src="https://github.com/9oormthon-8th/Back-end/assets/101448999/2a724d34-1873-4ca6-9cdc-86668113a82a">
 
