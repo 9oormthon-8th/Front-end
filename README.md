@@ -1,26 +1,28 @@
-# krampoline-step2
+# 🍊 로그하맨 : AI기반 제주도 여행기록 서비스
+> 또 다른 내가 담아주는 제주도의 기억
+##### 말하는 귤, 9oormthon in JEJU 8기
 
-## 소개
+<img width="1920" alt="표지" src="https://github.com/9oormthon-8th/Back-end/assets/101448999/2a724d34-1873-4ca6-9cdc-86668113a82a">
 
-`krampoline-step2`은 krampoline의 React 예제입니다. 
-이 저장소에서는 `create-react-app`를 사용하여 기본적인 React App을 만듭니다.
-[serve](https://www.npmjs.com/package/serve)를 이용하여 3000번 포트에서 서버를 열고 React 기본 파일을 제공합니다.
+## 🍊 프로젝트 설명
+<img width="1920" alt="핵심 기능1" src="../Front-end/assets/overview.png">
+<img width="1920" alt="솔루션" src="https://github.com/9oormthon-8th/Back-end/assets/101448999/161c682c-1134-47d3-b4d5-3de284fab215">
+<img width="1920" alt="우리의 고객 페르소나" src="https://github.com/9oormthon-8th/Back-end/assets/101448999/b52940c5-3bd2-4f41-bfa8-5dbecdcc58d3">
+<img width="1920" alt="브랜드 핵심 가치" src="https://github.com/9oormthon-8th/Back-end/assets/101448999/1a995a2d-5db0-44d5-8899-e84dd70662d6">
 
 
-쿠버네티스 구성은 다음과 같습니다.
-![‎크램폴린 쿠버네티스 ‎001](https://github.com/EdenKim-dev/krampoline_step2_v2/assets/108042383/b0ef60b6-cde7-466b-a6da-007f48fc797b)
+## 🍊 주요 기능
+<img width="1920" alt="핵심 기능1" src="../Front-end/assets/2.png">
+<img width="1920" alt="핵심 기능2" src="../Front-end/assets/3.png">
+<img width="1920" alt="핵심 기능3" src="../Front-end/assets/4.png">
 
-발급된 url에 포함된 random uid를 기반으로 사용자의 클러스터가 선택됩니다.
-클러스터 내에서 Ingress가 해당 주소를 받아서 적절한 Service에게 리다이렉트 시킵니다.
+## 🍊 시연
+<p align="center">
+<img height="480" alt="팀원소개" src="../Front-end/assets/ezgif-3-fab4de0d6c.gif">
+</p>
 
-## 필요 사항
+## 📢 아키텍처
+<img width="1920" alt="아키텍처" src="https://github.com/9oormthon-8th/Back-end/assets/101448999/6d6f777e-7160-45df-933a-fe60809e1787">
 
-- 기본적인 IDE 사용법 (자세한 내용은 가이드 문서 참조)
-
-## 주의 사항
-
-- 만약 다른 서비스의 API를 사용하려고 하면 카카오의 프록시를 사용해야합니다. 해당 내용은 문의해주세요.
-- 꼭 `Dockerfile`과 `k8s` 폴더를 프로젝트에 포함시켜주세요.
-  - 프로젝트의 루트 (`/`) 위치에 포함되게 해주세요.
-- `k8s/deployment.yaml` 파일은 필히 확인하시기 바랍니다.
-- `main` 브런치에 작성해주세요.
+## 🍊 팀원 소개
+<img width="1920" alt="팀원소개" src="../Front-end/assets/team.png">
