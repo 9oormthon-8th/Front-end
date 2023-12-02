@@ -18,7 +18,7 @@
 
 ## 🍊 시연
 <p align="center">
-<img height="480" alt="팀원소개" src="https://github.com/9oormthon-8th/Front-end/blob/main/assets/ezgif-3-fab4de0d6c.gif?raw=true">
+<img height="480" alt="팀원소개" src="https://github.com/9oormthon-8th/Front-end/blob/main/assets/ezgif-3-7e0a8fdd60.gif?raw=true">
 </p>
 
 ## 📢 아키텍처
